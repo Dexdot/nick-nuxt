@@ -22,6 +22,9 @@ export default {
       // Reset scroll
       this.lmS.setScroll(0, 0);
 
+      // Hide scrollbar
+      this.toggleScrollbar(false);
+
       this.subscribe();
     });
   },
@@ -82,28 +85,24 @@ export default {
       if (this.lmS) this.lmS.update();
     },
     stopScroll() {
-      // Scrollbar node
-      const scrollbar =
-        this.lmS.scroll.scrollbar ||
-        document.querySelector(`.${this.lmS.scrollbarClass}`);
-
-      // Show scrollbar
-      scrollbar.style.display = 'none';
+      // this.toggleScrollbar(false)
 
       // Stop scroll
       if (this.lmS) this.lmS.stop();
     },
     startScroll() {
+      // this.toggleScrollbar(true)
+
+      // Start scroll
+      if (this.lmS) this.lmS.start();
+    },
+    toggleScrollbar(show = true) {
       // Scrollbar node
       const scrollbar =
         this.lmS.scroll.scrollbar ||
         document.querySelector(`.${this.lmS.scrollbarClass}`);
 
-      // Hide scrollbar
-      scrollbar.style.display = 'block';
-
-      // Start scroll
-      if (this.lmS) this.lmS.start();
+      scrollbar.style.display = show ? 'block' : 'none';
     }
   },
   watch: {

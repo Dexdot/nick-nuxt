@@ -22,7 +22,7 @@ export const getters = {
 
 export const mutations = {
   toggleDark(state, isDark) {
-    state.isDark = isDark;
+    state.isDark = isDark !== undefined ? isDark : !state.isDark;
   },
   disableScroll(state) {
     state.scrollDisabled = true;

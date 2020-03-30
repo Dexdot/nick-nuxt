@@ -1,5 +1,13 @@
 @import "responsive-mixin"
 @import "grid"
+
+// Link
+=link($color)
+  &,
+  &:visited,
+  &:active,
+  &:focus
+    color: $color
   
 // PF Regal
 =pf($weight: r)

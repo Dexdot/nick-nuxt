@@ -59,38 +59,29 @@ export default {
   --color-text-dk: #FFFFFF
   --color-bg-dk: #000000
 
+a:not(.no-theme)
+  +link(var(--color-text-lt))
+
+.page--dark a:not(.no-theme)
+  +link(var(--color-text-dk))
 </style>
 
 <style lang="sass" scoped>
 .scroll-container
   overflow: hidden
 
-.page--white .page:not(.dark)
+.page--white .page:not(.page--dark)
   background: #fff
 
-.page:not(.dark)
+.page:not(.page--dark)
   transition: background 0.5s ease-in-out
 
   color: var(--color-text-lt)
   background: var(--color-bg-lt)
 
-  /deep/ a
-    &,
-    &:visited,
-    &:active,
-    &:focus
-      color: var(--color-text-lt)
-
-.page.dark
+.page--dark
   transition: background 0.5s ease-in-out
 
   color: var(--color-text-dk)
   background: var(--color-bg-dk)
-
-  /deep/ a
-    &,
-    &:visited,
-    &:active,
-    &:focus
-      color: var(--color-text-dk)
 </style>

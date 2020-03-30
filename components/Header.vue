@@ -1,12 +1,12 @@
 <template>
   <header
-    :class="['header', { 'header--dark': isDark, visible: !isScrolling }]"
+    :class="['header', { 'header--dark': isHeaderDark, visible: !isScrolling }]"
   >
     <div class="container u-flex u-aic u-jcsb">
-      <router-link class="t-ttu" to="/">Nick Adams</router-link>
+      <nuxt-link class="header__logo t-ttu" to="/">Nick Adams</nuxt-link>
       <button
         :class="['menu-btn', { active: isModalActive }]"
-        @click="$emit('menu-btn-click')"
+        @click="onMenuBtnClick"
       >
         <span class="menu-btn__circle"></span>
         <span class="menu-btn__circle"></span>
@@ -26,9 +26,15 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      isDark: 'dom/isDark',
-      isModalActive: 'dom/isModalActive'
-    })
+      modalName: 'dom/modalName',
+      isModalActive: 'dom/isModalActive',
+      isDark: 'dom/isDark'
+    }),
+    isHeaderDark() {
+      return this.isModalActive
+        ? ['menu', 'credits'].includes(this.modalName)
+        : this.isDark
+    }
   },
   mounted() {
     this.handleScroll()
@@ -45,6 +51,10 @@ export default {
           this.isScrolling = false
         }, 50)
       })
+    },
+    onMenuBtnClick() {
+      const modalName = this.isModalActive ? '' : 'menu'
+      this.$store.dispatch('dom/toggleModal', modalName)
     }
   }
 }
@@ -66,6 +76,8 @@ export default {
 .header:not(.visible)
   opacity: 0
 
+
+// Menu button
 .menu-btn
   display: flex
   flex-wrap: wrap
@@ -96,16 +108,14 @@ export default {
   margin-left: 4px
   margin-top: 4px
 
+
+// Dark
 .header--dark
   color: var(--color-text-dk)
 
   .menu-btn__circle
     background: var(--color-text-dk)
 
-  /deep/ a
-    &,
-    &:visited,
-    &:active,
-    &:focus
-      color: var(--color-text-dk)
+  .header__logo
+    +link(var(--color-text-dk))
 </style>
