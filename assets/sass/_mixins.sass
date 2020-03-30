@@ -1,8 +1,24 @@
 @import "responsive-mixin"
 @import "grid"
-
+  
+// PF Regal
+=pf($weight: r)
+  @if $weight == r
+    font-family: 'PF Regal Display Pro'
+    font-weight: 400
+  @if $weight == i
+    font-family: 'PF Regal Display Pro'
+    font-style: italic
+  @if $weight == mi
+    font-family: 'PF Regal Display Pro'
+    font-weight: 500
+    font-style: italic
+  
 // TT Norms
-=norms($weight: r)
+=tt($weight: r)
+  @if $weight == l
+    font-family: 'TT Norms'
+    font-weight: 300
   @if $weight == r
     font-family: 'TT Norms'
     font-weight: 400

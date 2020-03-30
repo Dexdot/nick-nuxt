@@ -1,19 +1,5 @@
 <template>
-  <transition name="menu">
-    <section class="menu" v-show="active">
-      <div class="menu__overlay"></div>
-
-      <div class="menu__content">
-        <nav class="menu__nav">
-          <ul>
-            <li class="menu__li">
-              <nuxt-link class="menu__link" to="/"></nuxt-link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </section>
-  </transition>
+  <div></div>
 </template>
 
 <script>

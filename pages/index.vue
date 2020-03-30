@@ -1,5 +1,8 @@
 <template>
-  <div></div>
+  <div>
+    <section style="height: 100vh;"></section>
+    <section style="height: 100vh;"></section>
+  </div>
 </template>
 
 <script>

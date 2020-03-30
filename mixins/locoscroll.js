@@ -3,17 +3,23 @@ let vuexScrollWatcher = '';
 export default {
   mounted() {
     this.$nextTick(() => {
+      // Create scroll instance
       this.lmS = new this.locoscroll({
         el: document.querySelector('.scroll-container'),
         smooth: true,
         getDirection: true
       });
 
+      // Handle scroll event
       this.lmS.on('scroll', e => {
         this.scroll = { ...e };
+        this.$root.$emit('locoscroll', this.scroll);
       });
 
+      // Update scroll
       this.lmS.update();
+
+      // Reset scroll
       this.lmS.setScroll(0, 0);
 
       this.subscribe();
@@ -24,7 +30,7 @@ export default {
     this.lmS.destroy();
   },
   data: () => ({
-    selector: '.scroll-container',
+    isScrolling: false,
     scroll: { scroll: { x: 0, y: 0 } },
     lmS: null
   }),
@@ -32,11 +38,11 @@ export default {
     translateY() {
       return process.client
         ? {
-            transform: `translate3d(0, ${this.y}px, 0)`
+            transform: `translate3d(0, ${this.scrollY}px, 0)`
           }
         : {};
     },
-    y() {
+    scrollY() {
       return this.scroll.scroll.y;
     }
   },
@@ -57,7 +63,10 @@ export default {
         }
       );
 
+      // Listen 'update-scroll' event
       this.$root.$on('update-scroll', this.updateScroll);
+
+      // Resize handler
       window.addEventListener('resize', this.onLmsResize);
     },
     unsubscribe() {
@@ -73,19 +82,27 @@ export default {
       if (this.lmS) this.lmS.update();
     },
     stopScroll() {
+      // Scrollbar node
       const scrollbar =
         this.lmS.scroll.scrollbar ||
         document.querySelector(`.${this.lmS.scrollbarClass}`);
-      scrollbar.style.display = 'block';
 
+      // Show scrollbar
+      scrollbar.style.display = 'none';
+
+      // Stop scroll
       if (this.lmS) this.lmS.stop();
     },
     startScroll() {
+      // Scrollbar node
       const scrollbar =
         this.lmS.scroll.scrollbar ||
         document.querySelector(`.${this.lmS.scrollbarClass}`);
-      scrollbar.style.display = 'none';
 
+      // Hide scrollbar
+      scrollbar.style.display = 'block';
+
+      // Start scroll
       if (this.lmS) this.lmS.start();
     }
   },
