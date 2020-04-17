@@ -24,6 +24,9 @@
   // Container Width
   --container-width: calc(100vw - var(--unit) * 2)
   
+@function minus($fn)
+  @return calc(#{$fn} * -1)
+  
 @function columns($i)
   @return calc(#{$i} * var(--column-unit))
 

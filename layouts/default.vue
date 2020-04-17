@@ -1,6 +1,7 @@
 <template>
   <div id="app" :class="['page', { 'page--dark': isDark }]">
     <Menu />
+    <Credits />
     <Header />
 
     <div class="scroll-container">
@@ -14,6 +15,7 @@ import { mapGetters } from 'vuex'
 
 import Header from '~/components/Header'
 import Menu from '~/components/Menu'
+import Credits from '~/components/Credits'
 
 import initCSSProps from '~/assets/scripts/css-props'
 import { detectDevices } from '~/assets/scripts/detect'
@@ -22,7 +24,8 @@ export default {
   name: 'App',
   components: {
     Header,
-    Menu
+    Menu,
+    Credits
   },
   data: () => ({
     detect: {},

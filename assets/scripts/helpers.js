@@ -129,3 +129,27 @@ export const loadCasesAssets = cases =>
     const processedCases = await Promise.all(casesPromises);
     resolve(processedCases);
   });
+
+export const copyObject = obj => JSON.parse(JSON.stringify(obj));
+
+export const getSlidesByHr = fields => {
+  let counter = 0;
+  const slides = [];
+
+  fields.text.content.forEach(field => {
+    if (field.nodeType !== 'hr') {
+      const slide = slides[counter];
+
+      if (Array.isArray(slide)) {
+        slide.push(field);
+      } else {
+        slides[counter] = [];
+        slides[counter].push(field);
+      }
+    } else {
+      counter++;
+    }
+  });
+
+  return slides;
+};
