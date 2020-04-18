@@ -3,6 +3,7 @@
     <Menu />
     <Credits />
     <Header />
+    <Stories />
 
     <div class="scroll-container">
       <nuxt ref="page" />
@@ -16,6 +17,7 @@ import { mapGetters } from 'vuex'
 import Header from '~/components/Header'
 import Menu from '~/components/Menu'
 import Credits from '~/components/Credits'
+import Stories from '~/components/Stories'
 
 import initCSSProps from '~/assets/scripts/css-props'
 import { detectDevices } from '~/assets/scripts/detect'
@@ -25,7 +27,8 @@ export default {
   components: {
     Header,
     Menu,
-    Credits
+    Credits,
+    Stories
   },
   data: () => ({
     detect: {},
@@ -73,7 +76,7 @@ a:not(.no-theme)
 .scroll-container
   overflow: hidden
 
-.page--white .page:not(.page--dark)
+.body-white .page:not(.page--dark)
   background: #fff
 
 .page:not(.page--dark)

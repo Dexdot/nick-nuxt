@@ -2,7 +2,8 @@ export const state = () => ({
   modalName: '',
   isModalActive: false,
   scrollDisabled: false,
-  isDark: false
+  isDark: false,
+  storiesPayload: null
 });
 
 export const getters = {
@@ -17,6 +18,9 @@ export const getters = {
   },
   isDark({ isDark }) {
     return isDark;
+  },
+  storiesPayload({ storiesPayload }) {
+    return storiesPayload;
   }
 };
 
@@ -36,6 +40,9 @@ export const mutations = {
   toggleModal(state, isModalActive) {
     state.isModalActive =
       isModalActive !== undefined ? isModalActive : !state.isModalActive;
+  },
+  setStoriesPayload(state, storiesPayload) {
+    state.storiesPayload = storiesPayload;
   }
 };
 
@@ -62,5 +69,8 @@ export const actions = {
     } else {
       commit('enableScroll');
     }
+  },
+  setStoriesPayload({ commit }, storiesPayload) {
+    commit('setStoriesPayload', storiesPayload);
   }
 };

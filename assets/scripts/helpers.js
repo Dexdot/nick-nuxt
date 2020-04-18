@@ -1,19 +1,5 @@
 import client from '~/api/client';
 
-export const findYearInString = s =>
-  s.split(/[^\d]/).filter(n => {
-    if (n >= 1900 && n <= 2099) return n;
-  });
-
-export const setCaseYear = project => {
-  if (project.fields) {
-    project.fields.year = +findYearInString(project.fields.date)[0];
-  } else {
-    project.year = +findYearInString(project.date)[0];
-  }
-  return project;
-};
-
 export const isImage = ({ fields }) =>
   fields.file.contentType.split('/')[0] === 'image';
 
@@ -105,13 +91,6 @@ const loadContentItem = item =>
 
 const processCase = project =>
   new Promise(async resolve => {
-    // Categories
-    const categoriesPromises = project.fields.categories.map(({ sys }) =>
-      loadCategory(sys.id)
-    );
-    const categories = await Promise.all(categoriesPromises);
-    project.fields.categories = [...categories];
-
     // Rich content
     const contentPromises = project.fields.content.content.map(item =>
       loadContentItem(item)
@@ -119,7 +98,6 @@ const processCase = project =>
     const content = await Promise.all(contentPromises);
     project.fields.content.content = [...content];
 
-    project = { ...setCaseYear(project) };
     resolve(project);
   });
 
@@ -152,4 +130,17 @@ export const getSlidesByHr = fields => {
   });
 
   return slides;
+};
+
+export const getRandomEntries = (entries, n) => {
+  const randomEntries = [];
+  const len = Math.min(n, entries.length);
+
+  while (randomEntries.length < len) {
+    const randomEl = entries[Math.floor(Math.random() * entries.length)];
+    const ids = randomEntries.map(({ sys }) => sys.id);
+    if (!ids.includes(randomEl.sys.id)) randomEntries.push(randomEl);
+  }
+
+  return randomEntries;
 };

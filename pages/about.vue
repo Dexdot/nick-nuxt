@@ -177,12 +177,8 @@ export default {
         observer.observe(el)
       })
     },
-    isImage(item) {
-      return isImage(item)
-    },
-    isVideo(item) {
-      return isVideo(item)
-    }
+    isImage,
+    isVideo
   }
 }
 </script>

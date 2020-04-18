@@ -129,13 +129,15 @@ module.exports = {
   // Plugins
   plugins: [
     { src: '~/plugins/global' },
-    { src: '~/plugins/locoscroll', mode: 'client' }
+    { src: '~/plugins/locoscroll', mode: 'client' },
+    { src: '~/plugins/swiper', ssr: false }
   ],
   /**
    * Css / Sass / scss
    */
   css: [
     'locomotive-scroll/dist/locomotive-scroll.min.css',
+    'swiper/dist/css/swiper.css',
     { src: '~assets/sass/main.sass', lang: 'sass' }
   ],
   /*
