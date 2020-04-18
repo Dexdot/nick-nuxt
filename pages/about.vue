@@ -323,8 +323,7 @@ export default {
   width: 182px
   height: auto
 
-.is-mob,
-.is-safari
+.is-mob
   .about-credits
     transform: unset !important
 

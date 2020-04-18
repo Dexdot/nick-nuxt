@@ -1,16 +1,15 @@
 <template>
   <div>
-    <Main :scroll="scroll" :isNextVisible="isNextVisible" :cases="mainCases" />
+    <Main :scroll="scroll" :isNextVisible="isNextVisible" :cases="blackCases" />
     <Next
       @intersect="onNextIntersect"
       @notintersect="onNextIntersect"
-      to="/about"
-      :isPageDark="false"
+      to="/"
+      :isDark="false"
+      :isPageDark="true"
     >
-      <span slot="title">About</span>
-      <span slot="text"
-        >Digital designer & art director from St.Petersburg
-      </span>
+      <span slot="title">There will be light</span>
+      <span slot="text">Make a step and start over again </span>
     </Next>
   </div>
 </template>
@@ -30,7 +29,7 @@ export default {
   },
   head() {
     return {
-      title: 'Index'
+      title: 'Black'
     }
   },
   data: () => ({
@@ -38,14 +37,14 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      mainCases: 'cases/mainCases'
+      blackCases: 'cases/blackCases'
     })
   },
   mounted() {
-    this.$store.dispatch('dom/toggleDark', false)
+    this.$store.dispatch('dom/toggleDark', true)
   },
   async fetch({ store }) {
-    await store.dispatch('cases/loadMainCases')
+    await store.dispatch('cases/loadBlackCases')
   },
   methods: {
     onNextIntersect(entry) {

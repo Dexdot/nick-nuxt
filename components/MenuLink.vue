@@ -13,12 +13,16 @@ export default {
   props: {
     to: { type: [String, Object] }
   },
+  data: () => ({
+    isTouch: false
+  }),
   mounted() {
+    this.isTouch = isTouchDevice()
     charming(this.$el)
   },
   methods: {
     mouseenter() {
-      if (isTouchDevice()) return false
+      if (this.isTouch) return false
 
       const chars = this.$el.querySelectorAll('span')
 

@@ -27,6 +27,9 @@ export default {
   mounted() {
     this.observe()
   },
+  beforeDestroy() {
+    this.observer.unobserve(this.$el)
+  },
   methods: {
     startCount() {
       this.isAnimating = true
@@ -41,7 +44,7 @@ export default {
       this.isAnimating = false
     },
     observe() {
-      const observer = new IntersectionObserver(
+      this.observer = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -52,7 +55,6 @@ export default {
 
             if (entry.intersectionRatio >= 0.4) {
               this.$store.dispatch('dom/toggleDark', this.isDark)
-
               if (!this.isAnimating) {
                 this.startCount()
               }
@@ -64,7 +66,7 @@ export default {
         },
         { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] }
       )
-      observer.observe(this.$el)
+      this.observer.observe(this.$el)
     }
   }
 }

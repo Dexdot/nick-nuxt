@@ -360,7 +360,7 @@ main
   overflow-x: hidden
 
 // Case
-.page:not(.dark) .case
+.page:not(.page--dark) .case
   @media (max-width: 700px)
     background: #fff
 

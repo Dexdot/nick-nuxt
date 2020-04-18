@@ -12,7 +12,7 @@ export default {
 
       // Handle scroll event
       this.lmS.on('scroll', e => {
-        this.scroll = { ...e };
+        this.scroll = { ...e, lmS: this.lmS };
         this.$root.$emit('locoscroll', this.scroll);
       });
 
@@ -102,6 +102,7 @@ export default {
         this.lmS.scroll.scrollbar ||
         document.querySelector(`.${this.lmS.scrollbarClass}`);
 
+      if (!scrollbar) return false;
       scrollbar.style.display = show ? 'block' : 'none';
     }
   },
