@@ -8,6 +8,8 @@
     <div class="scroll-container">
       <nuxt ref="page" />
     </div>
+
+    <div class="cover"></div>
   </div>
 </template>
 
@@ -31,13 +33,13 @@ export default {
     Stories
   },
   data: () => ({
-    detect: {},
-    dir: {}
+    detect: {}
   }),
   computed: {
     ...mapGetters({
       isDark: 'dom/isDark',
-      isModalActive: 'dom/isModalActive'
+      isModalActive: 'dom/isModalActive',
+      routeDir: 'dom/routeDir'
     }),
     page() {
       return this.$refs.page && this.$refs.page.$children[0]
@@ -50,8 +52,10 @@ export default {
     this.detect = detectDevices()
   },
   watch: {
-    $route(to, from) {
-      this.dir = { to, from }
+    $route: {
+      handler(to, from) {
+        this.$store.dispatch('dom/setRouteDir', { to, from })
+      }
     }
   }
 }
@@ -90,4 +94,17 @@ a:not(.no-theme)
 
   color: var(--color-text-dk)
   background: var(--color-bg-dk)
+
+.cover
+  z-index: 10
+  position: fixed
+  top: 0
+  left: 0
+
+  width: 100vw
+  height: 100vh
+
+  background: #000
+  transform: translateY(100%)
+  will-change: transform
 </style>

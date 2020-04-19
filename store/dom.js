@@ -3,7 +3,8 @@ export const state = () => ({
   isModalActive: false,
   scrollDisabled: false,
   isDark: false,
-  storiesPayload: null
+  storiesPayload: null,
+  routeDir: {}
 });
 
 export const getters = {
@@ -21,6 +22,9 @@ export const getters = {
   },
   storiesPayload({ storiesPayload }) {
     return storiesPayload;
+  },
+  routeDir({ routeDir }) {
+    return routeDir;
   }
 };
 
@@ -43,6 +47,9 @@ export const mutations = {
   },
   setStoriesPayload(state, storiesPayload) {
     state.storiesPayload = storiesPayload;
+  },
+  setRouteDir(state, routeDir) {
+    state.routeDir = routeDir;
   }
 };
 
@@ -72,5 +79,8 @@ export const actions = {
   },
   setStoriesPayload({ commit }, storiesPayload) {
     commit('setStoriesPayload', storiesPayload);
+  },
+  setRouteDir({ commit }, routeDir) {
+    commit('setRouteDir', routeDir);
   }
 };

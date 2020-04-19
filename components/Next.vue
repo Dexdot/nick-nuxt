@@ -28,6 +28,7 @@ export default {
     this.observe()
   },
   beforeDestroy() {
+    this.stopCount()
     this.observer.unobserve(this.$el)
   },
   methods: {
