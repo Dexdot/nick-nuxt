@@ -12,7 +12,7 @@
       <h1
         v-else
         v-show="!isNextVisible"
-        :class="['main-title-mob', 't-h2', { soon: isSoon }]"
+        :class="['main-title-mob', 't-h1', { soon: isSoon }]"
         :style="{
           transform: `translate3d(-50%, ${this.scroll.scroll.y}px, 0)`
         }"
@@ -57,6 +57,9 @@
                   :alt="img.fields.title"
                 />
               </div>
+              <p v-if="i === 0" class="case-subtitle">
+                Московский бренд лаконичных украшений
+              </p>
             </span>
 
             <nuxt-link
@@ -82,7 +85,16 @@
                   :alt="img.fields.title"
                 />
               </div>
+              <p v-if="i === 0" class="case-subtitle">
+                Московский бренд лаконичных украшений
+              </p>
             </nuxt-link>
+            <!-- <p
+              v-if="project.fields.shortSubtitle && i === 0"
+              class="case-subtitle"
+            >
+              {{ project.fields.shortSubtitle }}
+            </p> -->
           </li>
         </ul>
       </li>
@@ -93,7 +105,6 @@
     </nuxt-link>
   </main>
 </template>
-
 
 <script>
 import { mapGetters } from 'vuex'
@@ -234,25 +245,24 @@ export default {
 .main-title,
 .main-title-mob
   &::before
-    content: 'SOON'
+    content: 'soon'
     position: absolute
-    top: 100%
-    left: 0
+    top: 90%
+    right: 0
 
     color: var(--color-text-lt)
-    +hoves(m)
-    font-size: 10px
-    letter-spacing: 0.24em
-    text-transform: uppercase
+    +hoves(r)
+    font-size: 24px
     text-align: center
     white-space: nowrap
+    letter-spacing: 0
 
     transition: 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0s
     opacity: 0
     transform: translate(0, 16px)
 
     @media (max-width: $mob)
-      font-size: 9px
+      font-size: 18px
       transition: 0.25s cubic-bezier(0.25, 0.1, 0.25, 1)
 
   &.soon::before
@@ -341,6 +351,9 @@ export default {
 .case li:first-child .img:hover
   transform: scale3d(.95,.95,1)
 
+  .case-subtitle
+    opacity: 1
+
   img,
   video
     transform: scale3d(1.15,1.15,1)
@@ -354,6 +367,17 @@ export default {
   @media (max-width: $tab)
     padding: 204px 0 160px
 
+.case-subtitle
+  position: absolute
+  top: calc(100% + 16px)
+  left: 0
+
+  transition: opacity .5s cubic-bezier(.455,.03,.515,.955)
+  opacity: 0
+
+  @media (max-width: $tab)
+    display: none
+  
 .case
   position: relative
 
@@ -388,8 +412,14 @@ export default {
   li:nth-child(1) .img
     +case-a
 
+
   li:nth-child(2) .img
     +case-a-sm
+
+  .case-subtitle
+    left: unset
+    right: 0
+    text-align: right
 
 
 .case:nth-child(2),
@@ -420,6 +450,10 @@ export default {
 .case:nth-child(13)
   .img
     +case-e
+
+  .case-subtitle
+    padding-left: 24px
+
 
 
 .case:nth-child(6)
@@ -498,6 +532,9 @@ export default {
 .case:nth-child(16)
   .img
     +case-k
+
+  .case-subtitle
+    padding-left: 24px
 
 
 .case:nth-child(n + 17)
