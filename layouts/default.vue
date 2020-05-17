@@ -80,9 +80,6 @@ a:not(.no-theme)
 .scroll-container
   overflow: hidden
 
-.body-white .page:not(.page--dark)
-  background: #fff
-
 .page:not(.page--dark)
   transition: background 0.5s ease-in-out
 

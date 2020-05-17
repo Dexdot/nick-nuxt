@@ -1,54 +1,29 @@
 <template>
   <div>
-    <ul class="case-row u-flex">
+    <ul class="case-row">
       <li
         class="case-row__li"
         v-for="(img, i) in content.images"
         :key="i + img.fields.file.url"
       >
-        <div
-          v-if="content.box"
-          class="case-box"
-          :style="{ backgroundColor: content.color || '#DDDDDD' }"
-        >
-          <BaseImage
-            v-if="isImage(img)"
-            class="case-row__img case-box__img"
-            :img="img"
-            :alt="img.fields.title"
-            draggable="false"
-          />
-          <video
-            v-if="isVideo(img)"
-            class="case-row__img case-box__img"
-            :src="img.fields.file.url"
-            playsinline
-            autoplay
-            muted
-            loop
-            draggable="false"
-          />
-        </div>
+        <BaseImage
+          v-if="isImage(img)"
+          class="case-row__img"
+          :img="img"
+          :alt="img.fields.title"
+          draggable="false"
+        />
 
-        <template v-else>
-          <BaseImage
-            v-if="isImage(img)"
-            class="case-row__img"
-            :img="img"
-            :alt="img.fields.title"
-            draggable="false"
-          />
-          <video
-            v-if="isVideo(img)"
-            class="case-row__img"
-            :src="img.fields.file.url"
-            playsinline
-            autoplay
-            muted
-            loop
-            draggable="false"
-          />
-        </template>
+        <video
+          v-if="isVideo(img)"
+          class="case-row__img"
+          :src="img.fields.file.url"
+          playsinline
+          autoplay
+          muted
+          loop
+          draggable="false"
+        />
       </li>
     </ul>
   </div>
@@ -70,44 +45,30 @@ export default {
 
 <style lang="sass" scoped>
 .case-row
-  margin-left: calc(#{gutters(1)} * -1)
-  margin-bottom: gutters(1)
+  display: flex
+
+  @media (min-width: $tab + 1)
+    justify-content: space-between
 
   @media (max-width: $tab)
-    margin-left: -16px
-
-  @media (max-width: 700px)
-    width: 100vw
     flex-direction: column
-    margin-left: calc(-1 * var(--unit))
 
-// LI
 .case-row__li
-  width: 50%
-  margin-left: gutters(1)
+  @media (max-width: $tab)
+    width: 100%
+    
+.case-row__li:first-child
+  @media (min-width: $tab + 1)
+    width: column-spans(2)
 
   @media (max-width: $tab)
-    margin-left: 16px
+    margin-bottom: 8px
 
-  @media (max-width: 700px)
-    width: 100%
-    margin-left: 0
-
-.case-row__li:not(:last-child)
-  @media (max-width: 700px)
-    margin-bottom: 16px
-
-.case-box
-  padding: 10.4% 12.7%
-
-  @media (max-width: 700px)
-    padding: 12.9% var(--unit)
-
-.case-box__img
-  box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.15)
+.case-row__li:last-child
+  @media (min-width: $tab + 1)
+    width: column-spans(3)
 
 .case-row__img
-  outline: none
   display: block
   max-width: 100%
   width: 100%

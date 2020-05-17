@@ -1,54 +1,28 @@
 <template>
   <main>
     <article class="case">
-      <h1 class="case__title t-h3">{{ project.title }}</h1>
-      <p>{{ project.subtitle }}</p>
+      <h1 class="case__title t-h1">{{ project.title }}</h1>
 
       <div class="case__cover">
         <BaseImage
-          class="case__img"
           draggable="false"
           :img="project.cover"
           :alt="project.cover.fields.title"
           @complete="onBaseImageComplete"
         />
-
-        <div
-          class="case__preview"
-          v-if="project.stories && project.stories.length > 1"
-        >
-          <ButtonPreview
-            ref="preview"
-            :list="project.stories"
-            @click="showStories"
-          />
-        </div>
       </div>
 
-      <section :style="[{ 'min-height': `${asideHeight}px` }]">
-        <aside ref="aside">
-          <ul>
-            <li>
-              <b>{{ project.clientLabel || 'Client' }}</b>
-              <p>{{ project.client }}</p>
-            </li>
-            <li>
-              <b>Role</b>
-              <p>{{ project.role }}</p>
-            </li>
-            <li>
-              <b>Date</b>
-              <p>{{ project.date }}</p>
-            </li>
+      <h2 class="case__subtitle t-h2">{{ project.subtitle }}</h2>
 
-            <template v-if="project.awards">
-              <li>
-                <b>Awards</b>
-                <p>{{ project.awards }}</p>
-              </li>
-            </template>
-          </ul>
-        </aside>
+      <section class="case__container">
+        <div class="case__info-left">
+          <p>{{ project.date }}</p>
+        </div>
+
+        <div class="case__info-right">
+          <p>{{ project.role }}</p>
+          <b>{{ project.client }}</b>
+        </div>
 
         <ul class="case__content">
           <li
@@ -56,44 +30,26 @@
             :key="i + item.nodeType"
             :class="{
               case__text: isText(item),
-              case__block: isBlock(item),
-              'case__box--no-mb':
-                isBox(item) && item.data.target.fields.resetBottom
+              case__block: isNotText(item),
+              'case__block--first': item.isFirstBlock
             }"
           >
+            <div
+              class="case__info-right case__info-right--inner"
+              v-if="item.isFirstBlock"
+            >
+              <p>{{ project.role }}</p>
+              <b>{{ project.client }}</b>
+            </div>
+
             <p v-if="isText(item)" v-html="render(item)"></p>
-
-            <BaseImage
-              class="case__img"
-              draggable="false"
-              :img="item.data.target"
-              :alt="item.data.target.fields.title"
-              @complete="onBaseImageComplete"
-              v-if="isImage(item)"
-            />
-
-            <video
-              class="case__img"
-              v-if="isVideo(item)"
-              :src="item.data.target.fields.file.url"
-              draggable="false"
-              autoplay
-              playsinline
-              loop
-              muted
-            />
-
-            <CaseBox v-if="isBox(item)" :content="item.data.target.fields" />
-
             <CaseRow v-if="isRow(item)" :content="item.data.target.fields" />
-
-            <MobileBox
-              v-if="isMobileBox(item)"
+            <CaseQuote
+              v-if="isQuote(item)"
               :content="item.data.target.fields"
             />
-
-            <WideSlider
-              v-if="isWideslider(item)"
+            <CaseBlock
+              v-if="isBlock(item)"
               :content="item.data.target.fields"
             />
           </li>
@@ -101,31 +57,27 @@
       </section>
 
       <ul class="case__footer">
-        <li
-          class="u-flex"
-          v-if="project.team && project.team.content.length > 0"
-        >
-          <div class="case__footer-col">
-            <b>Team</b>
-          </div>
-          <div class="case__footer-col">
-            <ul class="case__team">
-              <li
-                v-for="(item, i) in project.team.content"
-                :key="i + item.nodeType"
-              >
-                <p v-if="isText(item)" v-html="render(item)"></p>
-              </li>
-            </ul>
-          </div>
+        <li v-if="project.clientLabel || project.client">
+          <b v-if="project.clientLabel">{{ project.clientLabel }}</b>
+          <p v-if="project.client">{{ project.client }}</p>
         </li>
 
-        <li class="u-flex" v-if="project.contentAuthors">
-          <div class="case__footer-col">
+        <li v-if="project.team && project.team.content.length > 0">
+          <ul class="case__footer-list">
+            <li
+              v-for="(item, i) in project.team.content"
+              :key="i + item.nodeType"
+            >
+              <p v-if="isText(item)" v-html="render(item)"></p>
+            </li>
+          </ul>
+          <div
+            class="case__footer-content case__footer-content--inner"
+            v-if="project.contentAuthors"
+          >
             <b>Content</b>
-          </div>
-          <div class="case__footer-col">
-            <ul>
+
+            <ul class="case__footer-list">
               <li
                 v-for="(item, i) in project.contentAuthors"
                 :key="i + project.slug"
@@ -136,25 +88,40 @@
           </div>
         </li>
 
-        <li class="u-flex" v-if="project.etalon">
-          <div class="case__footer-col">
-            <b>Etalon</b>
-          </div>
+        <li class="case__footer-content" v-if="project.contentAuthors">
+          <b>Content</b>
 
-          <div class="case__footer-col">
-            <a :href="project.etalon" target="_blank">
-              {{ project.etalon.replace(/(^\w+:|^)\/\//, '') }}
-            </a>
-          </div>
+          <ul class="case__footer-list">
+            <li
+              v-for="(item, i) in project.contentAuthors"
+              :key="i + project.slug"
+            >
+              {{ item }}
+            </li>
+          </ul>
+        </li>
+
+        <li v-if="project.etalon">
+          <b>Etalon</b>
+
+          <a :href="project.etalon" target="_blank">
+            {{ project.etalon.replace(/(^\w+:|^)\/\//, '') }}
+          </a>
         </li>
       </ul>
     </article>
 
-    <Next v-if="nextCase" :to="nextCase.to" :isPageDark="false">
+    <Next v-if="nextCase" :to="nextCase.to" :isPageDark="false" isCase>
       <span slot="title">{{ nextCase.title }}</span>
       <span slot="text">
         {{ nextCase.subtitle }}
       </span>
+      <BaseImage
+        slot="image"
+        v-if="nextCase.cover"
+        :img="nextCase.cover"
+        :alt="nextCase.cover.fields.title"
+      />
     </Next>
   </main>
 </template>
@@ -164,25 +131,22 @@
 import { mapGetters } from 'vuex'
 
 import Next from '~/components/Next'
-import ButtonPreview from '~/components/ButtonPreview'
+import CaseQuote from '~/components/CaseQuote'
 import CaseRow from '~/components/CaseRow'
-import CaseBox from '~/components/CaseBox'
-import MobileBox from '~/components/MobileBox'
-import WideSlider from '~/components/WideSlider'
+import CaseBlock from '~/components/CaseBlock'
 
 import page from '~/mixins/page'
 import render from '~/mixins/render'
 import { getRandomEntries } from '~/assets/scripts/helpers'
+import { fetchCase } from '~/api/cases'
 
 export default {
   mixins: [page, render],
   components: {
-    ButtonPreview,
-    Next,
+    CaseQuote,
     CaseRow,
-    CaseBox,
-    MobileBox,
-    WideSlider
+    CaseBlock,
+    Next
   },
   head() {
     const { project } = this
@@ -233,7 +197,7 @@ export default {
     const cases = await store.dispatch('cases/loadCases')
 
     const slug = params.id
-    let project = cases.find(v => v.fields.slug === slug)
+    let project = cases.find(v => v.slug === slug)
 
     if (!project) {
       try {
@@ -243,11 +207,8 @@ export default {
       }
     }
 
-    return { project: project.fields }
+    return { project }
   },
-  data: () => ({
-    asideHeight: 100
-  }),
   computed: {
     ...mapGetters({
       cases: 'cases/allCases'
@@ -267,11 +228,12 @@ export default {
       )
       const randomCase = getRandomEntries(filteredCases, 1)[0]
       if (randomCase && 'fields' in randomCase) {
-        const { title, subtitle, slug } = randomCase.fields
+        const { title, subtitle, slug, cover } = randomCase.fields
 
         nextCase = {
           title,
           subtitle,
+          cover,
           to: `/case/${slug}`
         }
       }
@@ -279,40 +241,22 @@ export default {
       return nextCase
     }
   },
+  created() {
+    const firstBlock = this.project.content.content.find(block => {
+      return this.isNotText(block)
+    })
+
+    if (firstBlock) firstBlock.isFirstBlock = true
+  },
   mounted() {
     this.$store.dispatch('dom/toggleDark', false)
-    document.body.classList.add('body-white')
-    window.addEventListener('resize', this.setAsideHeight)
-
     this.observe()
-    this.startPreviews()
-  },
-  beforeDestroy() {
-    document.body.classList.remove('body-white')
-    window.removeEventListener('resize', this.setAsideHeight)
+
+    window.$case = this
   },
   methods: {
-    showStories() {
-      const { stories, title, date, etalon } = this.project
-
-      const payload = {
-        title,
-        subtitle: date,
-        list: stories,
-        url: etalon
-      }
-
-      this.$store.dispatch('dom/setStoriesPayload', payload)
-      this.$store.dispatch('dom/toggleModal', 'stories')
-    },
     observe() {
-      const elements = this.$el.querySelectorAll(`.case__title,
-      .case__title + p,
-      .case__cover,
-      .case__img,
-      .case aside li,
-      .case__content > li,
-      .case__footer > li`)
+      const elements = this.$el.querySelectorAll(`.case__content > li`)
 
       this.observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -327,246 +271,161 @@ export default {
     onBaseImageComplete(img) {
       this.observer.observe(img)
     },
-    startPreviews() {
-      if (this.project.stories && this.project.stories.length > 1)
-        this.$nextTick(this.$refs.preview.start)
-    },
-    setAsideHeight() {
-      if (this.$refs.aside) this.asideHeight = this.$refs.aside.offsetHeight
+    isNotText: function(item) {
+      return this.isBlock(item) || this.isRow(item) || this.isQuote(item)
     },
     isBlock: item =>
       item.nodeType === 'embedded-entry-block' &&
-      ['row', 'box', 'mobileBox'].includes(
-        item.data.target.sys.contentType.sys.id
-      ),
+      item.data.target.sys.contentType.sys.id === 'caseBlock',
     isRow: item =>
       item.nodeType === 'embedded-entry-block' &&
-      item.data.target.sys.contentType.sys.id === 'row',
-    isBox: item =>
+      item.data.target.sys.contentType.sys.id === 'caseRow',
+    isQuote: item =>
       item.nodeType === 'embedded-entry-block' &&
-      item.data.target.sys.contentType.sys.id === 'box',
-    isMobileBox: item =>
-      item.nodeType === 'embedded-entry-block' &&
-      item.data.target.sys.contentType.sys.id === 'mobileBox',
-    isWideslider: item =>
-      item.nodeType === 'embedded-entry-block' &&
-      item.data.target.sys.contentType.sys.id === 'wideslider'
+      item.data.target.sys.contentType.sys.id === 'caseQuote'
   }
 }
 </script>
 
+
 <style lang="sass" scoped>
-main
-  overflow-x: hidden
-
-// Case
-.page:not(.page--dark) .case
-  @media (max-width: 700px)
-    background: #fff
-
 .case
-  font-size: 18px
-  line-height: 1.6
-
-  margin-left: auto
-  margin-right: auto
-  width: column-spans(8)
-  min-height: 100vh
-  padding-top: 11.5%
-  padding-bottom: 10.5%
+  padding: 24vh var(--unit) 37vh
 
   @media (max-width: $tab)
-    width: 100%
-    padding-left: var(--unit)
-    padding-right: var(--unit)
+    padding: 168px var(--unit) 40px
 
-    padding-top: 33%
-    padding-bottom: 35.8%
-
-// Title
 .case__title
-  line-height: 1
-  margin-bottom: 0.65em
+  text-align: right
+  margin: 0 0 24px auto
 
-// Content
-.case >
-  h1, p
-    width: column-spans(4)
-    margin-left: column-spans(4)
+  @media (max-width: $tab)
+    margin: 0 0 8px auto
 
-    @media (max-width: $tab)
-      margin-left: 0
-      width: 100%
+.case__cover
+  width: 100vw
+  margin-left: minus(var(--unit))
+  margin-bottom: 48px
 
-.case__img,
-.case__content /deep/ img,
-.case__content /deep/ video
-  @media (max-width: $mob)
-    user-select: none
-    pointer-events: none
-
-.case__content > li >
-  h2, h3,
-  ul, ol,
-  a, p
-    width: column-spans(4)
-    margin-left: column-spans(4)
+  @media (max-width: $tab)
+    margin-bottom: 16px
+  
+  img
+    display: block
+    width: 100%
+    height: auto
 
     @media (max-width: $tab)
-      margin-left: 0
-      width: 100%
+      height: 100vh
+      object-fit: cover
 
-.case__content /deep/ a > b
+.case__subtitle
+  margin-bottom: 80px
+
+  @media (min-width: $tab + 1)
+    max-width: mix(4)
+
+  @media (max-width: $tab)
+    margin-bottom: 16px
+
+.case__container
   position: relative
 
-.case__content /deep/ a > b::before
-  content: ''
-  position: absolute
-  bottom: -4px
-  left: 0
+.case__info-left
+  @media (min-width: $tab + 1)
+    float: left
 
-  width: 100%
-  height: 1px
+  @media (max-width: $tab)
+    margin-bottom: 40px
 
-  background: var(--color-text-lt)
-  transform-origin: 100% 50%
-  transition: $trs
+.case__info-right b
+  margin-top: 32px
+  display: block
 
-.case__content /deep/ a:hover > b::before
-  transform: scaleX(0)
+  @media (max-width: $tab)
+    margin-top: 24px
 
-.case__box--no-mb + li > .case__img
-  margin-top: 0
+.case__info-right
+  @media (min-width: $tab + 1)
+    float: right
 
-.case__block
-  @media (min-width: 901px)
-    width: column-spans(10)
-    margin-left: calc(-1 * #{mix(1)})
+.case__info-right:not(.case__info-right--inner)
+  @media (max-width: $tab)
+    display: none
 
-.case__text + li .wideslider,
-.case__text + .case__block
-  margin-top: 8.3%
+.case__info-right--inner
+  margin-bottom: 40px
 
-  @media (max-width: 700px)
-    margin-top: 80px
+  @media (min-width: $tab + 1)
+    display: none
 
-// Paragraph
-.case p
+.case__text
+  @media (min-width: $tab + 1)
+    max-width: column-spans(2)
+    margin: 0 0 24px mix(1)
+
+  @media (max-width: $tab)
+    margin-bottom: 24px
+
+.case__block:not(:last-child)
   margin-bottom: 24px
 
-.case__team li:not(:first-child) /deep/ b
-  display: block
-  margin-top: 16px
-
-.case__team p
-  margin-bottom: 0
-
-// Cover
-.case__cover
-  position: relative
-
-.case__cover .case__img:not(video)
-  @media (max-width: 700px)
-    object-fit: cover
-    height: 100vh
-
-
-// Preview
-.case__preview
-  pointer-events: auto
-  position: absolute
-  right: calc(-1 * #{mix(2)})
-  bottom: 4.5%
   @media (max-width: $tab)
-    right: 0
+    margin-bottom: 8px
 
-// Images
-.case__img
-  display: block
-  width: 100vw
-  height: auto
-  margin: 10.4% 0 10.4% calc(-1 * #{mix(2)} - #{var(--unit)})
+.case__block--first
+  margin-top: 22vh
 
   @media (max-width: $tab)
-    margin: 48px 0 48px calc(-1 * #{var(--unit)})
+    margin-top: 40px
 
-// Footer
+.case__content
+  margin-bottom: 120px
+
+  @media (max-width: $tab)
+    margin-bottom: 24px
+  
 .case__footer
-  padding-top: 4%
+  display: flex
+  flex-wrap: wrap
+  margin-left: -12px
+  margin-top: -48px
 
 .case__footer > li
-  min-height: 7em
-  padding-top: 1.8em
-  padding-bottom: 1.4em
+  @media (max-width: $tab)
+    margin-top: 48px
+    margin-left: 12px
+    width: calc(50% - 12px)
 
-  position: relative
 
-.case__footer > li::before
-  content: ''
-  position: absolute
-  bottom: 0
-  left: 0
+.case__footer-list > li /deep/ b
+  display: block
 
-  width: 100%
-  height: 1px
-  background: var(--color-text-lt)
-  opacity: 0.1
-
-.case__footer-col:first-child
-  @media (max-width: 700px)
-    margin-right: 0
-    width: column-spans(3)
-
-.case__footer-col
-  width: column-spans(4)
+.case__footer-list > li:not(:first-child) /deep/ b
+  margin-top: 32px
 
   @media (max-width: $tab)
-    width: column-spans(5)
+    margin-top: 24px
 
-.case__footer-col:last-child
-  @media (max-width: 700px)
-    padding-left: 56px
-    width: column-spans(9)
-  @media (max-width: 360px)
-    padding-left: 40px
-
-
-// Aside
-aside
-  max-width: 11em
-  float: left
-
+.case__footer-content:not(.case__footer-content--inner)
   @media (max-width: $tab)
-    margin-bottom: 80px
-    max-width: 80%
-    float: unset
+    display: none
 
-.case aside li
-  margin-bottom: 32px
+.case__footer-content--inner
+  margin-top: 24px
+  
+  @media (min-width: $tab + 1)
+    display: none
 
-// OBSERVE ANIMATION
-.case__title,
-.case__title + p,
-.case__img,
-.case aside li,
-.case__content > li,
 .case__footer > li
-  opacity: 0
-  transition: .9s cubic-bezier(.215,.61,.355,1)
+  &:not(:last-child)
+    @media (min-width: $tab + 1)
+      width: mix(1)
 
-  &[data-visible="true"]
-    opacity: 1
+  &:last-child
+    @media (min-width: $tab + 1)
+      width: column-spans(1)
+      margin-left: auto
 
-.case aside li,
-.case__footer > li
-  transform: translateY(16px)
-
-  &[data-visible="true"]
-    transform: translateY(0)
-
-@for $i from 1 through 4
-  .case aside li,
-  .case__footer > li
-    &:nth-child(#{$i})
-      transition: 0.4s cubic-bezier(.25,.1,.25,1) (#{$i*0.05s})
+.case__footer-list
 </style>
