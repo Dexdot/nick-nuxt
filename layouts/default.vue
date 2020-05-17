@@ -64,7 +64,7 @@ export default {
 <style lang="sass">
 \:root
   --color-text-lt: #1F2020
-  --color-bg-lt: #EDECED
+  --color-bg-lt: #FFFFFF
 
   --color-text-dk: #FFFFFF
   --color-bg-dk: #000000

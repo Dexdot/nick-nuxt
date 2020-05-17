@@ -170,7 +170,7 @@ export default {
   top: 3.7%
   padding: 0 var(--unit)
 
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     top: 32px
 
 .stories-section

@@ -57,7 +57,7 @@ export default {
   margin-bottom: 9%
   margin-left: calc(-1 * #{mix(2)} - #{var(--unit)})
 
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     margin-bottom: 48px
     margin-left: calc(-1 * var(--unit))
 
@@ -71,7 +71,7 @@ export default {
   margin-left: 2.135vw
   margin-right: 2.135vw
 
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     width: column-spans(10)
 
   @media (max-width: $mob)

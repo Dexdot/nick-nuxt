@@ -163,7 +163,7 @@ export default {
 .case-box--fullscreen
   width: 100vw
   margin-left: calc(-1 * #{mix(1)} - #{var(--unit)})
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     margin-left: calc(-1 * var(--unit))
 
 
@@ -171,7 +171,7 @@ export default {
 .case-box:not(.case-box--no-mb)
   margin-bottom: gutters(1)
 
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     margin-bottom: 16px
 
 
@@ -187,7 +187,7 @@ export default {
 
   > li:not(:last-child)
     margin-bottom: columns(1)
-    @media (max-width: 900px)
+    @media (max-width: $tab)
       margin-bottom: 24px
 
 

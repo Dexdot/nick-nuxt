@@ -73,7 +73,7 @@ export default {
   margin-left: calc(#{gutters(1)} * -1)
   margin-bottom: gutters(1)
 
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     margin-left: -16px
 
   @media (max-width: 700px)
@@ -86,7 +86,7 @@ export default {
   width: 50%
   margin-left: gutters(1)
 
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     margin-left: 16px
 
   @media (max-width: 700px)

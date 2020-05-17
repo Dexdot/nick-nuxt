@@ -375,7 +375,7 @@ main
   padding-top: 11.5%
   padding-bottom: 10.5%
 
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     width: 100%
     padding-left: var(--unit)
     padding-right: var(--unit)
@@ -394,7 +394,7 @@ main
     width: column-spans(4)
     margin-left: column-spans(4)
 
-    @media (max-width: 900px)
+    @media (max-width: $tab)
       margin-left: 0
       width: 100%
 
@@ -412,7 +412,7 @@ main
     width: column-spans(4)
     margin-left: column-spans(4)
 
-    @media (max-width: 900px)
+    @media (max-width: $tab)
       margin-left: 0
       width: 100%
 
@@ -477,7 +477,7 @@ main
   position: absolute
   right: calc(-1 * #{mix(2)})
   bottom: 4.5%
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     right: 0
 
 // Images
@@ -487,7 +487,7 @@ main
   height: auto
   margin: 10.4% 0 10.4% calc(-1 * #{mix(2)} - #{var(--unit)})
 
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     margin: 48px 0 48px calc(-1 * #{var(--unit)})
 
 // Footer
@@ -520,7 +520,7 @@ main
 .case__footer-col
   width: column-spans(4)
 
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     width: column-spans(5)
 
 .case__footer-col:last-child
@@ -536,7 +536,7 @@ aside
   max-width: 11em
   float: left
 
-  @media (max-width: 900px)
+  @media (max-width: $tab)
     margin-bottom: 80px
     max-width: 80%
     float: unset
