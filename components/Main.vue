@@ -234,39 +234,39 @@ export default {
   --unit-reg: 8.02vw
   --unit-sm: 5.3125vw
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     --unit-reg: 32px
 
   --xs-w: 27.084vw
   --xs-h: 41.667%
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     --xs-w: 58.67vw
     --xs-h: 85.335%
 
   --s-w: 29.167vw
   --s-h: 41.75%
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     --s-w: 53.333vw
     --s-h: 69.35%
 
   --m-w: 34.0625vw
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     --m-w: 36.8vw
 
   --l-w: 37.5vw
   --l-h: 23%
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     --l-w: 68.26vw
     --l-h: 46.65%
 
   --xl-w: 57.1875vw
   --xl-h: 40%
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     --xl-w: calc(100vw - 32px)
     --xl-h: 60.8%
 
   --xxl-w: 57.91vw
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     --xxl-w: 57.6vw
 </style>
 
@@ -311,7 +311,7 @@ $mob-mb: 28%
     left: 0
 
     color: var(--color-text-lt)
-    +tt(b)
+    +hoves(m)
     font-size: 10px
     letter-spacing: 0.24em
     text-transform: uppercase
@@ -322,7 +322,7 @@ $mob-mb: 28%
     opacity: 0
     transform: translate(0, 16px)
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       font-size: 9px
       transition: 0.25s cubic-bezier(0.25, 0.1, 0.25, 1)
 
@@ -331,7 +331,7 @@ $mob-mb: 28%
     opacity: 1
     transform: translate(0, 0)
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       transition: 0.25s cubic-bezier(0.25, 0.1, 0.25, 1)
 
 .main-soon
@@ -350,7 +350,7 @@ $mob-mb: 28%
   left: 50vw
   margin-top: -0.5em
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     display: none
 
   /deep/ span
@@ -372,7 +372,7 @@ $mob-mb: 28%
   margin-top: -0.5em
   display: none
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     max-width: 100%
     width: auto
     display: block
@@ -428,20 +428,20 @@ $mob-mb: 28%
   margin-bottom: 11%
   padding-left: $unit-reg
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: calc(#{$mob-mb} + 24px)
 
   li:nth-child(1)
     margin-left: $xs-w
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       margin-left: 0
 
   li:nth-child(1) .img
     width: 50.625vw
     padding-bottom: 59.1%
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       width: 54.67vw
       padding-bottom: 46.5%
       margin-left: auto
@@ -452,7 +452,7 @@ $mob-mb: 28%
     bottom: -7%
     left: $unit-reg
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       bottom: -24px
 
   li:nth-child(2) .img
@@ -463,7 +463,7 @@ $mob-mb: 28%
 .case:nth-child(8)
   margin-bottom: 3.4%
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: $mob-mb
 
   .img
@@ -476,7 +476,7 @@ $mob-mb: 28%
   margin-bottom: 10.4%
   padding-right: $unit-sm
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: $mob-mb
     padding-right: $unit-reg
 
@@ -489,7 +489,7 @@ $mob-mb: 28%
 .case:nth-child(10)
   margin-bottom: 10.7%
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: $mob-mb
 
   .img
@@ -502,7 +502,7 @@ $mob-mb: 28%
 .case:nth-child(13)
   margin-bottom: 10.4%
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: $mob-mb
 
   .img
@@ -512,7 +512,7 @@ $mob-mb: 28%
 .case:nth-child(6)
   margin-bottom: 10.4%
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: $mob-mb
 
   .img
@@ -520,7 +520,7 @@ $mob-mb: 28%
     width: calc(100vw - #{$xl-w} - #{$unit-l})
     padding-bottom: calc(100vw - #{$xl-w} - #{$unit-l})
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       margin-left: auto
       margin-right: $unit-reg
       width: 59.73vw
@@ -529,7 +529,7 @@ $mob-mb: 28%
 .case:nth-child(7)
   margin-bottom: 10.4%
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: $mob-mb
 
   .img
@@ -538,7 +538,7 @@ $mob-mb: 28%
     width: calc(100vw - #{$unit-l} * 2)
     padding-bottom: 37.5%
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       margin-left: 64px
       margin-right: 32px
       width: calc(100vw - 96px)
@@ -546,21 +546,21 @@ $mob-mb: 28%
 
 .case:nth-child(10)
   margin-bottom: 14.2%
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: $mob-mb
 
 .case:nth-child(11)
   margin-bottom: 22%
   padding-left: $unit-reg
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: calc(#{$mob-mb} + 24px)
 
   li:nth-child(1) .img
     width: $xxl-w
     padding-bottom: 40.77%
     
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       padding-bottom: 41.983%
 
   li:nth-child(2)
@@ -568,7 +568,7 @@ $mob-mb: 28%
     top: 63%
     right: $unit-reg
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       top: unset
       bottom: -24px
 
@@ -579,28 +579,28 @@ $mob-mb: 28%
 .case:nth-child(12)
   margin-bottom: 10.4%
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: $mob-mb
 
   .img
     margin-left: $xl-w
     width: $xs-w
     padding-bottom: $xs-h
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       margin-left: auto
       margin-right: $unit-reg
 
 .case:nth-child(14)
   margin-bottom: 10.4%
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: $mob-mb
 
   .img
     margin-left: auto
     width: $m-w
     padding-bottom: 37.5%
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       width: 53.3vw
       padding-bottom: 57%
 
@@ -608,7 +608,7 @@ $mob-mb: 28%
 .case:nth-child(15)
   margin-bottom: 14.75%
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: calc(#{$mob-mb} + 24px)
 
   li:nth-child(1) .img
@@ -616,7 +616,7 @@ $mob-mb: 28%
     width: $xxl-w
     padding-bottom: 37.5%
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       padding-bottom: 38.4%
       margin-left: auto
       margin-right: $unit-reg
@@ -625,7 +625,7 @@ $mob-mb: 28%
     position: absolute
     bottom: -10%
     left: $unit-reg
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       bottom: -24px
 
   li:nth-child(2) .img
@@ -635,14 +635,14 @@ $mob-mb: 28%
 .case:nth-child(16)
   margin-bottom: 10%
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     margin-bottom: 13%
 
   .img
     width: 39.5vw
     padding-bottom: 56.25%
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       width: 57.6vw
       padding-bottom: 74.67%
 </style>

@@ -52,7 +52,7 @@ export default {
   opacity: 0
   pointer-events: none
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     opacity: 1
     pointer-events: none
 

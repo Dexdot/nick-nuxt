@@ -200,7 +200,7 @@ export default {
   @media (max-width: 1000px)
     padding-top: 0
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     padding-top: 40px
 
 .stories-close
@@ -210,13 +210,13 @@ export default {
   width: 32px
   height: 32px
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     width: 24px
     height: 24px
 
 .stories-close svg
   stroke: var(--color-text-lt)
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     width: 24px
     height: 24px
 
@@ -231,10 +231,10 @@ export default {
     width: 100%
     padding-bottom: 175.65%
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       padding-bottom: 160%
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     width: calc(100vw - (4 * var(--unit)))
 
 .story-img__i
@@ -250,20 +250,20 @@ export default {
   transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1)
   width: auto
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     transition: transform 0.2s ease
 
   .story-img
     margin-left: 1vw
     margin-right: 1vw
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       margin-left: 0.27vw
       margin-right: 0.27vw
 
 .swiper-slide:not(.swiper-slide-active)
   transform: scale(0.89)
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     transform: scale(0.855)
 
 .swiper-slide-active

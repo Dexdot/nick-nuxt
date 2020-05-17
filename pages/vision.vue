@@ -98,7 +98,7 @@ export default {
   bottom: 6%
   right: var(--unit)
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     right: 50%
     transform: translateX(50%)
 
@@ -116,7 +116,7 @@ export default {
 
   max-width: column-spans(8)
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     text-align: left
     line-height: 1.3
 
@@ -125,7 +125,7 @@ export default {
     padding-right: var(--unit)
 
 .vision-container /deep/ i
-  +pf(i)
+  +hoves(r)
 
 .quotes
   color: transparent

@@ -190,7 +190,7 @@ export default {
 
   text-align: right
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     right: var(--unit)
 
 nav /deep/ a
@@ -201,7 +201,7 @@ nav /deep/ a
   bottom: 6%
   right: calc(#{var(--unit)} + #{mix(1)})
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     right: var(--unit)
 
   li
@@ -210,14 +210,14 @@ nav /deep/ a
       margin-left: 8px
 
   a
-    +tt(r)
+    +hoves(r)
     font-size: 16px
     opacity: 0.3
 
     @media (min-width: 2200px)
       font-size: 18px
 
-    @media (max-width: 500px)
+    @media (max-width: $mob)
       font-size: 14px
 
 

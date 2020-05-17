@@ -401,7 +401,7 @@ main
 .case__img,
 .case__content /deep/ img,
 .case__content /deep/ video
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     user-select: none
     pointer-events: none
 
@@ -453,9 +453,6 @@ main
 // Paragraph
 .case p
   margin-bottom: 24px
-
-.case__team /deep/ b
-  +tt(m)
 
 .case__team li:not(:first-child) /deep/ b
   display: block
@@ -533,9 +530,6 @@ main
   @media (max-width: 360px)
     padding-left: 40px
 
-.case__footer-col b
-  +tt(m)
-
 
 // Aside
 aside
@@ -546,9 +540,6 @@ aside
     margin-bottom: 80px
     max-width: 80%
     float: unset
-
-.case aside b
-  +tt(m)
 
 .case aside li
   margin-bottom: 32px

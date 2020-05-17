@@ -6,7 +6,8 @@ export default {
       // Create scroll instance
       this.lmS = new this.locoscroll({
         el: document.querySelector('.scroll-container'),
-        smooth: true,
+        // smooth: true,
+        smooth: false,
         getDirection: true
       });
 

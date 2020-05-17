@@ -74,7 +74,7 @@ export default {
   @media (max-width: 900px)
     width: column-spans(10)
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     width: calc(100vw - var(--unit) * 2)
 
   margin-left: var(--unit)

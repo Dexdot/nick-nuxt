@@ -11,6 +11,12 @@
       <span slot="text"
         >Digital designer & art director from St.Petersburg
       </span>
+      <BaseImage
+        slot="image"
+        v-if="aboutImage"
+        :img="aboutImage"
+        :alt="aboutImage.fields.title"
+      />
     </Next>
   </div>
 </template>
@@ -44,8 +50,17 @@ export default {
   mounted() {
     this.$store.dispatch('dom/toggleDark', false)
   },
-  async fetch({ store }) {
+  async asyncData({ store }) {
+    // Cases
     await store.dispatch('cases/loadMainCases')
+
+    // About image
+    let about = store.getters['other/about']
+    if (!about || !about.fields) about = await store.dispatch('other/loadAbout')
+
+    const aboutImage = about.fields.mediaList[0]
+
+    return { aboutImage }
   },
   methods: {
     onNextIntersect(entry) {

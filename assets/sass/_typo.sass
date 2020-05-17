@@ -1,17 +1,20 @@
 @import "mixins"
 
 =h1
-  +yo('font-size', (375px: 40px, 1920px: 80px))
+  +yo('font-size', (375px: 64px, 1920px: 200px))
 =h2
-  +yo('font-size', (375px: 48px, 1920px: 64px, 2550px: 80px))
+  +yo('font-size', (375px: 36px, 1920px: 144px))
 =h3
-  +yo('font-size', (375px: 30px, 1920px: 48px))
+  +yo('font-size', (375px: 24px, 1920px: 72px))
 
 body
-  +tt(r)
-  font-size: 16px
-  letter-spacing: 0.02em
+  +hoves(r)
+  +yo('font-size', (375px: 18px, 1920px: 24px))
+  line-height: 1.2
   font-variant-ligatures: none
+
+b
+  +hoves(m)
 
 h1
   +h1
@@ -21,32 +24,20 @@ h3
   +h3
 
 .t-h1
-  +tt(r)
   +h1
-  letter-spacing: -0.02em
+  +hoves(l)
+  letter-spacing: -0.06em
+  line-height: 1
 
 .t-h2
-  +tt(l)
   +h2
-  letter-spacing: 0.02em
+  +hoves(r)
+  letter-spacing: -0.04em
+  line-height: 1
 
 .t-h3
-  +tt(r)
   +h3
-  letter-spacing: 0.02em
+  +hoves(r)
+  letter-spacing: -0.04em
+  line-height: 1
 
-.t-ttu
-  +tt(b)
-  font-size: 14px
-  letter-spacing: 0.24em
-  text-transform: uppercase
-
-.t-title
-  +pf(i)
-  font-size: 14px
-  letter-spacing: 0.04em
-
-.t-quote-body
-  +pf(r)
-  +yo('font-size', (375px: 20px, 1440px: 24px))
-  letter-spacing: 0.02em

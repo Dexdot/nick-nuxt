@@ -366,7 +366,7 @@ export default {
   &.visible
     opacity: 1
 
-  @media (max-width: 500px)
+  @media (max-width: $mob)
     opacity: 1
     position: static
 

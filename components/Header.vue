@@ -3,7 +3,9 @@
     :class="['header', { 'header--dark': isHeaderDark, visible: !isScrolling }]"
   >
     <div class="container u-flex u-aic u-jcsb">
-      <nuxt-link class="header__logo t-ttu" to="/">Nick Adams</nuxt-link>
+      <nuxt-link class="header__logo" to="/">
+        <img src="~assets/svg/logo.svg" alt="Nick Adams." />
+      </nuxt-link>
       <button
         :class="['menu-btn', { active: isModalActive }]"
         @click="onMenuBtnClick"
@@ -64,17 +66,24 @@ export default {
 .header
   z-index: 3
   position: fixed
-  top: 6%
+  top: 24px
   left: 0
 
   width: 100vw
   transition: $trs
 
-  @media (max-width: 500px)
-    top: 32px
+  @media (max-width: $mob)
+    top: 8px
 
 .header:not(.visible)
   opacity: 0
+
+
+// Logo
+.header__logo img
+  display: block
+  width: 96px
+  height: auto
 
 
 // Menu button
