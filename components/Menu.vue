@@ -8,7 +8,9 @@
           <li><MenuLink class="no-theme" to="/">Index</MenuLink></li>
           <li><MenuLink class="no-theme" to="/about">About</MenuLink></li>
           <li><MenuLink class="no-theme" to="/vision">Vision</MenuLink></li>
-          <li><MenuLink class="no-theme" to="/black">Black</MenuLink></li>
+          <li>
+            <MenuLink class="no-theme" to="/inspire" disable>Journal</MenuLink>
+          </li>
         </ul>
       </nav>
 
@@ -19,7 +21,7 @@
               class="no-theme"
               href="https://behance.net/stereocage"
               target="_blank"
-              >Behance</a
+              >behance</a
             >
           </li>
           <li>
@@ -27,15 +29,7 @@
               class="no-theme"
               href="https://dribbble.com/stereocage"
               target="_blank"
-              >Dribbble</a
-            >
-          </li>
-          <li>
-            <a
-              class="no-theme"
-              href="https://facebook.com/stereocage"
-              target="_blank"
-              >Facebook</a
+              >dribbble</a
             >
           </li>
           <li>
@@ -43,7 +37,7 @@
               class="no-theme"
               href="https://instagram.com/stereocage"
               target="_blank"
-              >Instagram</a
+              >instagram</a
             >
           </li>
         </ul>
@@ -106,12 +100,10 @@ export default {
 
 .menu-enter-active .menu__social li
   &:nth-child(1)
-    transition: 0.4s ease 0.6s
-  &:nth-child(2)
     transition: 0.4s ease 0.55s
-  &:nth-child(3)
+  &:nth-child(2)
     transition: 0.4s ease 0.5s
-  &:nth-child(4)
+  &:nth-child(3)
     transition: 0.4s ease 0.45s
 
 
@@ -147,12 +139,10 @@ export default {
 
 .menu-leave-active .menu__social li
   &:nth-child(1)
-    transition: 0.4s ease 0.25s
-  &:nth-child(2)
     transition: 0.4s ease 0.2s
-  &:nth-child(3)
+  &:nth-child(2)
     transition: 0.4s ease 0.15s
-  &:nth-child(4)
+  &:nth-child(3)
     transition: 0.4s ease 0.1s
 
 
@@ -185,40 +175,41 @@ export default {
   z-index: 1
   position: absolute
   top: 50%
-  right: calc(#{var(--unit)} + #{mix(1)})
+  right: var(--unit)
   transform: translateY(-50%)
 
   text-align: right
 
-  @media (max-width: $mob)
-    right: var(--unit)
-
-nav /deep/ a
-  +link(#fff)
+nav /deep/
+  a, span
+    +link(#fff)
 
 .menu__social
   position: absolute
-  bottom: 6%
-  right: calc(#{var(--unit)} + #{mix(1)})
+  bottom: 48px
+  left: calc(#{var(--unit)} + #{mix(1)})
 
   @media (max-width: $mob)
-    right: var(--unit)
+    bottom: 24px
+    left: 50%
+    transform: translateX(-50%)
 
-  li
-    margin-left: 16px
+  li:not(:first-child)
+    margin-left: 24px
+
+    @media (max-width: $mob)
+      margin-left: 16px
+
     @media (max-width: 360px)
       margin-left: 8px
 
   a
     +hoves(r)
-    font-size: 16px
+    font-size: 24px
     opacity: 0.3
 
-    @media (min-width: 2200px)
-      font-size: 18px
-
     @media (max-width: $mob)
-      font-size: 14px
+      font-size: 16px
 
 
 // Link hover

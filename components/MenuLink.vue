@@ -1,7 +1,16 @@
 <template>
-  <nuxt-link class="menu__link t-h2" :to="to" @mouseenter.native="mouseenter">
+  <nuxt-link
+    v-if="!disable"
+    class="menu__link"
+    :to="to"
+    @mouseenter.native="mouseenter"
+  >
     <slot></slot>
   </nuxt-link>
+
+  <span v-else class="menu__link">
+    <slot></slot>
+  </span>
 </template>
 
 <script>
@@ -11,7 +20,8 @@ import { isTouchDevice } from '~/assets/scripts/detect'
 
 export default {
   props: {
-    to: { type: [String, Object] }
+    to: { type: [String, Object] },
+    disable: { type: Boolean, default: false }
   },
   data: () => ({
     isTouch: false
@@ -57,6 +67,11 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.menu__link
+  +yo('font-size', (375px: 64px, 1920px: 96px))
+  letter-spacing: -0.04em
+  line-height: 0.96
+
 .menu__link /deep/ span
   display: inline-block
   will-change: transform, opacity

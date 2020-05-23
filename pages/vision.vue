@@ -3,7 +3,6 @@
     <section class="vision-container u-center">
       <article class="quotes" ref="quotes">
         <p
-          class="t-quote-body"
           v-html="render(el)"
           v-for="(el, i) in slides[activeSlide]"
           :key="i"

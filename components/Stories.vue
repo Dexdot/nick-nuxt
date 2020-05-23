@@ -2,7 +2,7 @@
   <transition name="stories">
     <section class="stories-section" v-show="active">
       <div class="stories-head" v-if="storiesPayload">
-        <p class="t-ttu">{{ storiesPayload.title }}</p>
+        <p>{{ storiesPayload.title }}</p>
 
         <button
           class="stories-close"
@@ -72,7 +72,7 @@
                 target="_blank"
                 @click.prevent
               >
-                <span class="t-ttu">{{
+                <span>{{
                   storiesPayload.url.replace(/(^\w+:|^)\/\//, '')
                 }}</span>
               </a>

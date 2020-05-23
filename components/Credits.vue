@@ -7,20 +7,20 @@
         <ul>
           <li>
             <button @click="$store.dispatch('dom/toggleModal', '')">
-              <span class="t-title">Design</span>
-              <p class="t-ttu">Nick Adams</p>
+              <span>Design</span>
+              <p>Nick Adams</p>
             </button>
           </li>
           <li>
-            <a href="http://hvxzcb.ru" target="_blank">
-              <span class="t-title">Development</span>
-              <p class="t-ttu">Kamil Sometimes</p>
+            <a href="http://hvxzcb.com" target="_blank">
+              <span>Development</span>
+              <p>Kamil Sometimes</p>
             </a>
           </li>
           <li>
             <a href="https://darina.now.sh" target="_blank">
-              <span class="t-title">Management</span>
-              <p class="t-ttu">Darina Yurina</p>
+              <span>Management</span>
+              <p>Darina Yurina</p>
             </a>
           </li>
         </ul>
@@ -144,6 +144,7 @@ export default {
 
 .credits__nav span
   display: block
+  opacity: 0.3
   margin-bottom: 4px
 
 .credits__nav li:not(:last-child)
