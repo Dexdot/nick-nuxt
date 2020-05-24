@@ -4,12 +4,21 @@
       <article class="about__text-wrap">
         <p class="about__date">2016-2020</p>
         <div class="about__text">
-          <p v-for="(p, i) in content.text" :key="i" v-html="render(p)"></p>
+          <p
+            v-for="(p, i) in content.text"
+            :key="i"
+            :style="{ '--delay': `${(i + 1) * 0.1}s` }"
+            v-html="render(p)"
+          ></p>
         </div>
       </article>
 
       <ul class="about__img-list">
-        <li v-for="item in content.mediaList" :key="item.fields.file.url">
+        <li
+          v-for="(item, i) in content.mediaList"
+          :key="item.fields.file.url"
+          :style="{ '--delay': `${(i + 1) * 0.1}s` }"
+        >
           <figure class="about__img">
             <video
               v-if="isVideo(item)"
@@ -49,39 +58,39 @@
 
         <div class="about__info-contact">
           <ul>
-            <li>
+            <li :style="{ '--delay': `0.05s` }">
               <a :href="`mailto:${this.content.email}`">{{
                 this.content.email
               }}</a>
             </li>
-            <li>
+            <li :style="{ '--delay': `0.01s` }">
               {{ this.content.postAddress }}
             </li>
-            <li>
+            <li :style="{ '--delay': `0.15s` }">
               Saint Petersburg
             </li>
-            <li>
+            <li :style="{ '--delay': `0.2s` }">
               Russia
             </li>
           </ul>
 
           <ul class="about__social">
-            <li>
+            <li :style="{ '--delay': `0.25s` }">
               <a href="https://behance.net/stereocage" target="_blank"
                 >behance</a
               >
             </li>
-            <li>
+            <li :style="{ '--delay': `0.3s` }">
               <a href="https://dribbble.com/stereocage" target="_blank"
                 >dribbble</a
               >
             </li>
-            <li>
+            <li :style="{ '--delay': `0.35s` }">
               <a href="https://instagram.com/stereocage" target="_blank"
                 >instagram</a
               >
             </li>
-            <li>
+            <li :style="{ '--delay': `0.4s` }">
               <a href="https://facebook.com/stereocage" target="_blank"
                 >facebook</a
               >
@@ -147,6 +156,7 @@ export default {
   methods: {
     observe() {
       const elements = this.$el.querySelectorAll(`
+        .about__text p,
         .about__img-list li,
         .about__info-img,
         .about__info-contact li
@@ -415,11 +425,13 @@ export default {
 
 
 // OBSERVER ANIMATION
+.about__text p,
 .about__img-list li,
 .about__info-img,
 .about__info-contact li
   opacity: 0
   transition: .9s cubic-bezier(.215,.61,.355,1)
+  transition-delay: var(--delay)
 
   &.visible
     opacity: 1

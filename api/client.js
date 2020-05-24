@@ -1,8 +1,9 @@
 const contentful = require('contentful');
+const keys = require('./keys.js');
 
 // Get keys
-const space = process.env.NUXT_ENV_SPACE_ID;
-const accessToken = process.env.NUXT_ENV_ACCESS_TOKEN;
+const space = keys.SPACE_ID;
+const accessToken = keys.ACCESS_TOKEN;
 
 // Client instance
 const client = contentful.createClient({ accessToken, space });

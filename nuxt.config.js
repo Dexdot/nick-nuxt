@@ -162,9 +162,9 @@ module.exports = {
         config.devtool = isClient ? 'source-map' : 'inline-source-map';
       }
     }
-  },
-  buildModules: [
-    // Simple usage
-    '@nuxtjs/dotenv'
-  ]
+  }
+  // buildModules: [
+  //   // Simple usage
+  //   '@nuxtjs/dotenv'
+  // ]
 };

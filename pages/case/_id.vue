@@ -251,8 +251,6 @@ export default {
   mounted() {
     this.$store.dispatch('dom/toggleDark', false)
     this.observe()
-
-    window.$case = this
   },
   methods: {
     observe() {
