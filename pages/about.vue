@@ -1,67 +1,14 @@
 <template>
   <main class="about">
-    <div class="about-container container">
-      <section class="about__info u-flex">
-        <article class="about__text">
+    <div class="about-container">
+      <article class="about__text-wrap">
+        <p class="about__date">2016-2020</p>
+        <div class="about__text">
           <p v-for="(p, i) in content.text" :key="i" v-html="render(p)"></p>
-          <img class="sign" src="~assets/svg/sign.svg" alt="Подпись" />
-        </article>
-
-        <div class="about__contact">
-          <p>Контакты</p>
-
-          <ul>
-            <li>
-              <a :href="`mailto:${this.content.email}`">{{
-                this.content.email
-              }}</a>
-            </li>
-            <li>
-              {{ this.content.postAddress }}
-            </li>
-            <li>
-              Saint Petersburg
-            </li>
-            <li>
-              Russia
-            </li>
-          </ul>
-
-          <ul class="about__social">
-            <li>
-              <a href="https://behance.net/stereocage" target="_blank"
-                >Behance</a
-              >
-            </li>
-            <li>
-              <a href="https://dribbble.com/stereocage" target="_blank"
-                >Dribbble</a
-              >
-            </li>
-            <li>
-              <a href="https://instagram.com/stereocage" target="_blank"
-                >Instagram</a
-              >
-            </li>
-            <li>
-              <a href="https://facebook.com/stereocage" target="_blank"
-                >Facebook</a
-              >
-            </li>
-            <li>
-              <a href="https://github.com/Dexdot" target="_blank">Github</a>
-            </li>
-          </ul>
-
-          <CreditsButton
-            class="about-credits"
-            @click="$store.dispatch('dom/toggleModal', 'credits')"
-            :style="translateY"
-          />
         </div>
-      </section>
+      </article>
 
-      <ul class="about__list u-flex">
+      <ul class="about__img-list">
         <li v-for="item in content.mediaList" :key="item.fields.file.url">
           <figure class="about__img">
             <video
@@ -82,33 +29,79 @@
         </li>
       </ul>
 
-      <figure class="about__big">
-        <video
-          class="about__big-inner"
-          v-if="isVideo(content.mediaBig)"
-          :src="content.mediaBig.fields.file.url"
-          autoplay
-          playsinline
-          loop
-          muted
-        />
+      <div class="about__info">
+        <figure class="about__info-img">
+          <video
+            v-if="isVideo(content.mediaBig)"
+            :src="content.mediaBig.fields.file.url"
+            autoplay
+            playsinline
+            loop
+            muted
+          />
 
-        <BaseImage
-          class="about__big-inner"
-          v-if="isImage(content.mediaBig)"
-          :img="content.mediaBig"
-          :alt="content.mediaBig.fields.title"
-        />
+          <BaseImage
+            v-if="isImage(content.mediaBig)"
+            :img="content.mediaBig"
+            :alt="content.mediaBig.fields.title"
+          />
+        </figure>
 
-        <h1 class="about__title">
-          <span>No one there</span><span>get back</span>
-        </h1>
-      </figure>
+        <div class="about__info-contact">
+          <ul>
+            <li>
+              <a :href="`mailto:${this.content.email}`">{{
+                this.content.email
+              }}</a>
+            </li>
+            <li>
+              {{ this.content.postAddress }}
+            </li>
+            <li>
+              Saint Petersburg
+            </li>
+            <li>
+              Russia
+            </li>
+          </ul>
+
+          <ul class="about__social">
+            <li>
+              <a href="https://behance.net/stereocage" target="_blank"
+                >behance</a
+              >
+            </li>
+            <li>
+              <a href="https://dribbble.com/stereocage" target="_blank"
+                >dribbble</a
+              >
+            </li>
+            <li>
+              <a href="https://instagram.com/stereocage" target="_blank"
+                >instagram</a
+              >
+            </li>
+            <li>
+              <a href="https://facebook.com/stereocage" target="_blank"
+                >facebook</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <button
+          class="about__credits"
+          type="button"
+          @click="$store.dispatch('dom/toggleModal', 'credits')"
+        >
+          Credits
+        </button>
+      </div>
     </div>
 
     <Next class="about-next" to="/vision" :isPageDark="true">
       <span slot="title">Vision</span>
-      <span slot="text">Looking the world through my eyes </span>
+      <span slot="text">Looking the world through<br />eyes of another</span>
     </Next>
   </main>
 </template>
@@ -118,14 +111,11 @@ import page from '~/mixins/page'
 import render from '~/mixins/render'
 
 import Next from '~/components/Next'
-import CreditsButton from '~/components/CreditsButton'
-
 import { isImage, isVideo } from '~/assets/scripts/helpers'
 
 export default {
   mixins: [page, render],
   components: {
-    CreditsButton,
     Next
   },
   head() {
@@ -157,15 +147,10 @@ export default {
   methods: {
     observe() {
       const elements = this.$el.querySelectorAll(`
-        .about__text > p,
-        .sign,
-        .about__contact > p,
-        .about__contact li,
-        .about-credits,
-        .about__list li,
-        .about__big-inner,
-        .about__title
-        `)
+        .about__img-list li,
+        .about__info-img,
+        .about__info-contact li
+      `)
 
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -184,203 +169,262 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+// Container
+.about-container
+  min-height: 100vh
+  padding-top: 8px
+
+  color: rgba(#fff, 0.6)
+
+  @media (max-width: $tab-sm)
+    padding: 32px 0 24px
+
+  /deep/ a
+    opacity: 0.6
+    transition: opacity $trs
+
+    &:hover
+      opacity: 1
+
+
+// Date
+.about__date
+  position: absolute
+  left: var(--unit)
+  top: calc(3.75vw * 4.5)
+  transform: translateY(-50%)
+
+  @media (max-width: $tab-sm)
+    font-size: 18px
+    width: 2.5em
+
+    top: 100%
+    transform: translateY(-100%)
+
+.about__text-wrap,
+.about__img-list
+  margin-bottom: 160px
+
+  @media (max-width: $tab) and (min-width: $tab-sm + 1)
+    margin-bottom: 80px
+
+
+// Text wrap
+.about__text-wrap
+  position: relative
+
+  @media (max-width: $tab-sm)
+    margin-bottom: 40px
+
+
+// Text
+.about__text
+  padding: 0 var(--unit)
+
+.about__text /deep/ u
+  +link(transparent)
+  -webkit-text-stroke-width: 1px
+  -webkit-text-stroke-color: rgba(#fff, 0.6)
+
+.about__text p:nth-child(1)
+  @media (min-width: $tab-sm + 1)
+    max-width: 22.9em
+
+.about__text p:not(:nth-child(1))
+  padding-left: mix(1)
+
+  @media (max-width: $tab-sm)
+    padding-left: 80px
+
+.about__text p:nth-child(n + 3)
+  @media (min-width: $tab-sm + 1)
+    padding-right: mix(1)
+
+.about__text p
+  +hoves(r)
+  letter-spacing: -0.04em
+  line-height: 0.96
+  font-size: 3.75vw
+
+  @media (max-width: $tab-sm)
+    font-size: 6.3vw
+
+
+// Images list
+.about__img-list
+  display: flex
+  padding: 0 var(--unit) 0 calc(#{var(--unit)} + #{mix(1)})
+
+  @media (max-width: $tab-sm)
+    padding: 0 var(--unit) 0 calc(#{var(--unit)} + 80px)
+    flex-direction: column
+    margin-bottom: 8px
+
+  li:nth-child(n + 3)
+    display: none
+
+  li:nth-child(1)
+    width: columns(1)
+
+    @media (max-width: $tab-sm)
+      margin-bottom: 8px
+      width: 100%
+
+    .about__img::before
+      padding-top: 180.2%
+
+      @media (max-width: $tab-sm)
+        padding-top: 152%
+
+  li:nth-child(2)
+    margin-left: gutters(1)
+    width: column-spans(3)
+
+    @media (max-width: $tab-sm)
+      margin: 0
+      width: 100%
+
+    .about__img::before
+      padding-top: 57.45%
+
+      @media (max-width: $tab-sm)
+        padding-top: 65.94%
+
+
+// Image
+.about__img
+  width: 100%
+  position: relative
+
+  &::before
+    content: ''
+    display: block
+    width: 100%
+
+  img, video
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    object-fit: cover
+
+
+// Info
+.about__info
+  display: flex
+  position: relative
+
+  @media (min-width: $tab-sm + 1)
+    padding-bottom: 48px
+    align-items: flex-end
+
+  @media (max-width: $tab-sm)
+    flex-direction: column
+    align-items: flex-start
+
+
+// Info image
+.about__info-img
+  position: relative
+
+  @media (min-width: $tab-sm + 1)
+    min-width: calc(#{var(--unit)} + #{column-spans(3)})
+    width: calc(#{var(--unit)} + #{column-spans(3)})
+    
+  @media (max-width: $tab-sm)
+    margin-bottom: 24px
+    width: calc(100% - #{var(--unit)} - 4.26vw)
+
+  &::before
+    content: ''
+    display: block
+    width: 100%
+    padding-top: 56.25%
+
+  img, video
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    object-fit: cover
+
+
+// Info contact
+.about__info-contact
+  @media (min-width: $tab-sm + 1)
+    margin-left: auto
+
+  @media (max-width: $tab-sm)
+    margin: 0 0 24px var(--unit)
+
+  @media (min-width: 1401px)
+    min-width: column-spans(1)
+    width: column-spans(1)
+
+  @media (max-width: 1400px) and (min-width: $tab-sm + 1)
+    margin-right: var(--unit)
+
+
+// Credits
+.about__credits
+  z-index: 1
+
+  @media (min-width: $tab-sm + 1)
+    position: absolute
+    bottom: 0
+    left: calc(#{var(--unit)} + #{column-spans(3)})
+    transform: translateX(-100%)
+
+  @media (max-width: $tab-sm)
+    margin: 0 var(--unit) 0 auto
+
+
+// Social
+.about__social
+  padding-top: 24px
+
+  @media (max-width: $tab-sm)
+    font-size: 18px
+
+.about__social a
+  transition: .4s cubic-bezier(.25,.1,.25,1)
+  &:hover
+    opacity: 1
+
+
+// Next
 .about-next
   position: relative
   z-index: 1
 
-.about-container
-  min-height: 100vh
-  padding-top: 5.6vh
-  padding-bottom: 10.5%
+  /deep/
+    .next-row
+      @media (max-width: $tab-sm)
+        flex: unset
 
-  @media (max-width: 800px) and (min-height: 801px)
-    padding-top: 240px
-    padding-bottom: 320px
+    .next-img
+      @media (max-width: $tab-sm)
+        display: none
 
-  @media (max-width: 800px) and (max-height: 800px)
-    padding-top: 36vh
-    padding-bottom: 48vh
-
-.about__info
-  padding-top: 8px
-  padding-left: mix(3)
-  margin-bottom: 12.2%
-
-  @media (max-width: 800px)
-    padding-left: 0
-    flex-direction: column
-    margin-bottom: 80px
-
-.about__text
-  width: mix(3)
-  line-height: 1.625
-
-  @media (max-width: 800px)
-    width: 100%
-    margin-bottom: 96px
-
-.about__text p
-  margin-bottom: 24px
-
-.about__contact
-  margin-left: gutters(1)
-
-  @media (max-width: 800px)
-    margin: 0
-
-.about__contact ul
-  padding-top: 24px
-
-.about__contact ul li
-  margin-bottom: 8px
-
-.about__list
-  padding-left: mix(3)
-  margin-left: calc(#{gutters(1)} * -1)
-  margin-bottom: 11.4%
-
-  @media (max-width: 800px)
-    padding: 0
-    margin: 0
-    flex-direction: column
-
-.about__list > li
-  margin-left: gutters(1)
-
-  @media (max-width: 800px)
-    margin-left: 0
-    margin-bottom: 104px
-    width: 100%
-
-.about__list > li:nth-child(even) .about__img
-  @media (max-width: 800px)
-    margin-left: auto
-
-.about__img
-  position: relative
-  width: column-spans(3)
-  padding-bottom: 177.77%
-
-  @media (max-width: 800px)
-    width: 58.6vw
-    padding-bottom: 118%
-
-.about__img video,
-.about__img img
-  position: absolute
-  top: 0
-  left: 0
-
-  width: 100%
-  height: 100%
-  object-fit: cover
-
-.about__big
-  position: relative
-  width: calc(#{var(--unit)} + #{column-spans(7)})
-  padding-bottom: 40.917%
-  margin-left: calc(-1 * var(--unit))
-
-  @media (max-width: 800px)
-    margin-left: calc(-1 * var(--unit))
-    width: 91.5vw
-    padding-bottom: 72%
-
-.about__big img
-  position: absolute
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  object-fit: cover
-
-.about__title
-  position: absolute
-  top: 0
-  left: 100%
-  writing-mode: vertical-lr
-  transform: rotate(-180deg) translateX(minus(gutters(1)))
-
-  display: none
-  flex-direction: column-reverse
-  align-items: flex-end
-
-  text-align: right
-  text-transform: uppercase
-  font-weight: 400
-  +yo('font-size', (375px: 18px, 1920px: 48px, 2550px: 64px))
-
-  @media (max-width: 800px)
-    left: unset
-    right: 0
-    top: calc(100% + var(--unit))
-    transform: rotate(-180deg)
-
-    white-space: nowrap
-
-.sign
-  margin-top: 24px
-  width: 182px
-  height: auto
-
-.is-mob
-  .about-credits
-    transform: unset !important
-
-
-// HOVER
-.about__social
-  display: inline-flex
-  flex-direction: column
-  align-items: flex-start
-
-.about__social a
-  transition: .4s cubic-bezier(.25,.1,.25,1)
-
-.about__social:hover a
-  opacity: 0.3
-
-.about__social a:hover
-  opacity: 1
+    .next-container
+      @media (max-width: $tab-sm)
+        padding: 0 var(--unit) 64px
+        justify-content: flex-end
 
 
 // OBSERVER ANIMATION
-.about__text > p,
-.sign,
-.about__contact > p,
-.about__contact li,
-.about__list li,
-.about__big-inner,
-.about__title
+.about__img-list li,
+.about__info-img,
+.about__info-contact li
   opacity: 0
   transition: .9s cubic-bezier(.215,.61,.355,1)
 
   &.visible
     opacity: 1
 
-.about-credits
-  z-index: 2
-  opacity: 0
-  transition: opacity .9s cubic-bezier(.215,.61,.355,1)
-
-  &.visible
-    opacity: 1
-
-  @media (max-width: $mob)
-    opacity: 1
-    position: static
-
-    display: block
-    margin-top: 32px
-    transform: translateY(0) !important
-
-@for $i from 1 through 6
-  .about__text > *
-    &:nth-child(#{$i})
-      transition: 1.2s cubic-bezier(.215,.61,.355,1) (#{$i*0.1s})
-
-@for $i from 1 through 3
-  .about__list li
-    &:nth-child(#{$i})
-      transition: 1.2s cubic-bezier(.215,.61,.355,1) (#{$i*0.1s})
+// @for $i from 1 through 6
+//   .about__text-row:nth-child(#{$i})
+//     transition: 1.2s cubic-bezier(.215,.61,.355,1) (#{$i*0.1s})
 </style>

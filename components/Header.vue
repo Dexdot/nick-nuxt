@@ -4,7 +4,16 @@
   >
     <div class="container u-flex u-aic u-jcsb">
       <nuxt-link class="header__logo" to="/">
-        <img src="~assets/svg/logo.svg" alt="Nick Adams." />
+        <img
+          v-show="!isHeaderDark"
+          src="~assets/svg/logo.svg"
+          alt="Nick Adams."
+        />
+        <img
+          v-show="isHeaderDark"
+          src="~assets/svg/logo-w.svg"
+          alt="Nick Adams."
+        />
       </nuxt-link>
       <button
         :class="['menu-btn', { active: isModalActive }]"
