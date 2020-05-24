@@ -19,7 +19,6 @@ dist
 *.env
 
 # Zeit
-api/keys.js
 *.now.json
 now.json
 .vercel

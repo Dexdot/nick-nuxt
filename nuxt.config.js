@@ -1,4 +1,22 @@
-import { svgoPlugins } from './svgo-plugins';
+const removeDimensions = require('svgo/plugins/removeDimensions');
+const removeViewBox = require('svgo/plugins/removeViewBox');
+
+function svgoPlugins() {
+  removeViewBox.active = false;
+  removeDimensions.active = true;
+
+  return [
+    removeDimensions,
+    removeViewBox,
+    {
+      removeAttrs: {
+        attrs: ['width', 'height']
+      }
+    },
+    { removeTitle: true },
+    { convertColors: { currentColor: true } }
+  ];
+}
 
 const baseTitle = 'Nick Adams';
 const baseDescription = 'Digital designer & art director from St. Petersburg';
@@ -162,9 +180,9 @@ module.exports = {
         config.devtool = isClient ? 'source-map' : 'inline-source-map';
       }
     }
-  }
-  // buildModules: [
-  //   // Simple usage
-  //   '@nuxtjs/dotenv'
-  // ]
+  },
+  buildModules: [
+    // Simple usage
+    '@nuxtjs/dotenv'
+  ]
 };
