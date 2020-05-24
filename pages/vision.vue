@@ -1,5 +1,5 @@
 <template>
-  <main class="vision" @click="onClick">
+  <main class="vision">
     <section class="vision-container u-center">
       <article class="quotes" ref="quotes">
         <p
@@ -9,9 +9,45 @@
         ></p>
       </article>
 
-      <div class="vision-counter" ref="counter">
-        <span>{{ activeSlide + 1 }} / {{ slides.length }}</span>
+      <div class="vision-nav">
+        <button
+          @click="onClick('prev')"
+          v-show="activeSlide !== 0"
+          type="button"
+        >
+          Назад
+        </button>
+        <button
+          @click="onClick('next')"
+          v-show="activeSlide !== slides.length - 1"
+          type="button"
+        >
+          Далее
+        </button>
       </div>
+
+      <button
+        :class="[
+          'vision-circle',
+          { 'vision-circle--animated': isCircleAnimated },
+          { 'vision-circle--hidden': activeSlide === slides.length - 1 }
+        ]"
+        ref="circle"
+        type="button"
+        @click="onCircleClick"
+      ></button>
+
+      <nuxt-link
+        :class="[
+          'u-center',
+          'vision-link',
+          { 'vision-link--hidden': activeSlide !== slides.length - 1 }
+        ]"
+        to="/black"
+        type="button"
+      >
+        <img src="~assets/svg/moon.svg" alt="Moon" />
+      </nuxt-link>
     </section>
   </main>
 </template>
@@ -30,37 +66,53 @@ export default {
   },
   async asyncData({ store }) {
     const vision = await store.dispatch('other/loadVision')
-
-    return { slides: getSlidesByHr(vision.fields), activeSlide: 0 }
+    return {
+      slides: getSlidesByHr(vision.fields),
+      activeSlide: 0,
+      dir: 'next',
+      isCircleAnimated: false
+    }
   },
   mounted() {
     this.$store.dispatch('dom/toggleDark', false)
-
-    this.$nextTick(() => {
-      const { quotes, counter } = this.$refs
-      if (!quotes) return false
-
-      setTimeout(() => {
-        quotes.classList.add('blur')
-        counter.classList.add('visible')
-      }, 200)
-
-      setTimeout(() => {
-        quotes.classList.add('is-faster')
-      }, 2200)
-    })
+    this.enterAnimation()
   },
   methods: {
-    onClick() {
+    enterAnimation() {
+      this.$nextTick(() => {
+        const { quotes, circle } = this.$refs
+
+        if (quotes) {
+          setTimeout(() => {
+            quotes.classList.add('blur')
+          }, 200)
+
+          setTimeout(() => {
+            quotes.classList.add('is-faster')
+          }, 2200)
+        }
+
+        if (circle) {
+          this.isCircleAnimated = true
+        }
+      })
+    },
+    onCircleClick() {
+      if (window.innerWidth <= 768) this.onClick('next')
+    },
+    onClick(dir = 'next') {
+      this.dir = dir
       this.$refs.quotes.classList.remove('blur')
       this.$refs.quotes.addEventListener('transitionend', this.onTransitionEnd)
     },
     onTransitionEnd({ propertyName }) {
       if (propertyName !== 'opacity') return false
 
-      if (this.activeSlide === this.slides.length - 1) {
-        this.activeSlide = 0
-      } else {
+      if (this.dir === 'prev' && this.activeSlide > 0) {
+        this.activeSlide--
+      }
+
+      if (this.dir === 'next' && this.activeSlide !== this.slides.length - 1) {
         this.activeSlide++
       }
 
@@ -75,62 +127,155 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.vision-next
-  position: relative
-  z-index: 1
-
-.vision-counter span
-  display: block
-  transform: translateY(100%)
-  opacity: 0
-  transition: opacity 1s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)
-
-.vision-counter.visible span
-  transform: translateY(0)
-  opacity: 1
-
-.vision-counter
-  overflow: hidden
-  font-size: 14px
-
-  position: absolute
-  bottom: 6%
-  right: var(--unit)
-
-  @media (max-width: $mob)
-    right: 50%
-    transform: translateX(50%)
-
 .vision-container
+  background: #EDECED
   position: relative
+
   min-height: 100vh
   min-height: calc(var(--vh, 1vh) * 100)
   width: 100vw
+
+  padding: 0 var(--unit)
   overflow: hidden
   flex-direction: column
 
-.vision-container p
-  line-height: 1.4444
-  text-align: center
+.vision-container p:not(:first-child)
+  line-height: 1.2
 
-  max-width: column-spans(8)
+  @media (min-width: $tab-sm + 1)
+    max-width: column-spans(2)
 
-  @media (max-width: $mob)
-    text-align: left
-    line-height: 1.3
-
-    max-width: 100%
-    padding-left: var(--unit)
-    padding-right: var(--unit)
+  @media (max-width: $tab-sm)
+    align-self: flex-start
 
 .vision-container /deep/ i
   +hoves(r)
+  line-height: 0.96
+  font-style: normal
+  letter-spacing: -0.04em
+  +yo('font-size', (375px: 36px, 1920px: 144px))
+
+  display: block
+  margin-bottom: 0.44em
+
+  @media (max-width: $tab-sm)
+    margin-bottom: 40px
+
+.vision-circle
+  position: absolute
+  left: 50%
+
+  width: 16.66vw
+  height: 16.66vw
+
+  transition: transform 1s ease-out, opacity 0.3s ease
+  // transition: transform 1s ease-out
+
+  @media (min-width: $tab-sm + 1)
+    pointer-events: none
+    top: 50%
+    transform: translate(-50%, -50%) scale(0)
+
+  @media (max-width: $tab-sm)
+    width: 104px
+    height: 104px
+
+    bottom: 32px
+    transform: translate(-50%, 0) scale(0)
+
+  &::after
+    content: ''
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    
+    width: 100%
+    height: 100%
+
+    border-radius: 50%
+    background: #48B49A
+    filter: blur(80px)
+
+    @media (max-width: $tab-sm)
+      filter: blur(20px)
+
+  &::before
+    @media (max-width: $tab-sm)
+      content: ''
+      display: block
+      width: 56px
+      height: 56px
+
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+
+      border-radius: 50%
+      border: 1px solid #000
+
+.vision-circle--hidden
+  @media (max-width: $tab-sm)
+    opacity: 0
+
+.vision-circle--animated
+  transform: translate(-50%, -50%) scale(1)
+
+  @media (max-width: $tab-sm)
+    transform: translate(-50%, 0) scale(1)
+
+
+.vision-link
+  position: absolute
+  bottom: 56px
+  left: 50%
+  transform: translate(-50%, 0)
+
+  width: 56px
+  height: 56px
+
+  border-radius: 50%
+  border: 1px solid #000
+
+  transition: opacity 0.3s ease
+
+  @media (min-width: $tab-sm + 1)
+    display: none
+
+  img
+    width: 16px
+    height: 16px
+
+.vision-link--hidden
+  opacity: 0
+  pointer-events: none
+
+.vision-nav
+  z-index: 1
+  position: absolute
+  bottom: 24px
+  left: calc(#{var(--unit)} + #{mix(3)})
+
+  @media (max-width: $tab-sm)
+    display: none
+
+  button
+    margin-right: 24px
 
 .quotes
+  position: relative
+  z-index: 1
+
   color: transparent
   text-shadow: 0px 0px 15px #000
   opacity: 0
   transition: 2s
+
+  width: 100%
+  display: flex
+  flex-direction: column
+  align-items: flex-end
 
 .quotes.blur
   text-shadow: 0px 0px 0px #000

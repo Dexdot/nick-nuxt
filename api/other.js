@@ -18,7 +18,7 @@ export const fetchVision = options =>
   new Promise(resolve => {
     client
       .getEntries({
-        content_type: 'vision',
+        content_type: 'visionTest',
         ...options
       })
       .then(({ items }) => {
