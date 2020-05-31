@@ -24,6 +24,18 @@
         >
           Далее
         </button>
+
+        <nuxt-link
+          :class="[
+            'u-center',
+            'vision-link',
+            { 'vision-link--hidden': activeSlide !== slides.length - 1 }
+          ]"
+          to="/black"
+          type="button"
+        >
+          <img src="~assets/svg/moon.svg" alt="Moon" />
+        </nuxt-link>
       </div>
 
       <button
@@ -35,12 +47,16 @@
         ref="circle"
         type="button"
         @click="onCircleClick"
-      ></button>
+      >
+        <img src="~assets/img/vision-circle.png" alt="Circle" />
+        <img src="~assets/img/vision-circle-2.png" alt="Circle" />
+      </button>
 
       <nuxt-link
         :class="[
           'u-center',
           'vision-link',
+          'vision-link--circle',
           { 'vision-link--hidden': activeSlide !== slides.length - 1 }
         ]"
         to="/black"
@@ -102,6 +118,7 @@ export default {
     },
     onClick(dir = 'next') {
       this.dir = dir
+
       this.$refs.quotes.classList.remove('blur')
       this.$refs.quotes.addEventListener('transitionend', this.onTransitionEnd)
     },
@@ -165,11 +182,10 @@ export default {
   position: absolute
   left: 50%
 
-  width: 16.66vw
-  height: 16.66vw
+  width: 40vw
+  height: 40vw
 
   transition: transform 1s ease-out, opacity 0.3s ease
-  // transition: transform 1s ease-out
 
   @media (min-width: $tab-sm + 1)
     pointer-events: none
@@ -177,28 +193,26 @@ export default {
     transform: translate(-50%, -50%) scale(0)
 
   @media (max-width: $tab-sm)
-    width: 104px
-    height: 104px
+    width: 200px
+    height: 200px
 
-    bottom: 32px
+    bottom: -16px
     transform: translate(-50%, 0) scale(0)
 
-  &::after
-    content: ''
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    
+  img
     width: 100%
     height: 100%
+    object-fit: contain
 
-    border-radius: 50%
-    background: #48B49A
-    filter: blur(80px)
+    &:first-child
+      opacity: 0.8
 
-    @media (max-width: $tab-sm)
-      filter: blur(20px)
+      @media (max-width: $tab-sm)
+        display: none
+
+    &:last-child
+      @media (min-width: $tab-sm + 1)
+        display: none
 
   &::before
     @media (max-width: $tab-sm)
@@ -227,18 +241,19 @@ export default {
 
 
 .vision-link
+  transition: opacity 0.3s ease
+
+.vision-link--circle
   position: absolute
   bottom: 56px
   left: 50%
   transform: translate(-50%, 0)
-
+  
   width: 56px
   height: 56px
 
   border-radius: 50%
   border: 1px solid #000
-
-  transition: opacity 0.3s ease
 
   @media (min-width: $tab-sm + 1)
     display: none
@@ -257,11 +272,18 @@ export default {
   bottom: 24px
   left: calc(#{var(--unit)} + #{mix(3)})
 
+  width: column-spans(2)
+  display: flex
+  align-items: center
+
   @media (max-width: $tab-sm)
     display: none
 
   button
     margin-right: 24px
+
+  .vision-link
+    margin-left: auto
 
 .quotes
   position: relative
