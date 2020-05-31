@@ -1,10 +1,5 @@
 <template>
-  <nuxt-link
-    v-if="!disable"
-    class="menu__link"
-    :to="to"
-    @mouseenter.native="mouseenter"
-  >
+  <nuxt-link v-if="!disable" class="menu__link" :to="to">
     <slot></slot>
   </nuxt-link>
 

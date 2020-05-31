@@ -251,7 +251,7 @@ export default {
     right: 0
 
     color: var(--color-text-lt)
-    +hoves(r)
+    +hoves(l)
     font-size: 24px
     text-align: center
     white-space: nowrap

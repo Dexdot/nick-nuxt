@@ -251,7 +251,7 @@ export default {
     padding-right: mix(1)
 
 .about__text p
-  +hoves(r)
+  +hoves(l)
   letter-spacing: -0.04em
   line-height: 0.96
   font-size: 3.75vw

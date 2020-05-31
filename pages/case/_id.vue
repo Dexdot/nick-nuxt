@@ -21,7 +21,7 @@
 
         <div class="case__info-right">
           <p>{{ project.role }}</p>
-          <b>{{ project.client }}</b>
+          <p class="case__info-client">{{ project.client }}</p>
         </div>
 
         <ul class="case__content">
@@ -33,6 +33,7 @@
               case__block: isNotText(item),
               'case__block--first': item.isFirstBlock
             }"
+            :set="(isImgLink = content[i + 1] && isImage(content[i + 1]))"
           >
             <div
               class="case__info-right case__info-right--inner"
@@ -42,7 +43,16 @@
               <b>{{ project.client }}</b>
             </div>
 
-            <p v-if="isText(item)" v-html="render(item)"></p>
+            <div class="case__img-link" v-if="isImgLink">
+              <p v-if="isText(item)" v-html="render(item)"></p>
+              <img
+                :src="content[i + 1].data.target.fields.file.url"
+                :alt="content[i + 1].data.target.fields.title"
+              />
+            </div>
+
+            <p v-else-if="isText(item)" v-html="render(item)"></p>
+
             <CaseRow v-if="isRow(item)" :content="item.data.target.fields" />
             <CaseQuote
               v-if="isQuote(item)"
@@ -100,15 +110,15 @@
             </li>
           </ul>
         </li>
-
-        <li v-if="project.etalon">
-          <b>Etalon</b>
-
-          <a :href="project.etalon" target="_blank">
-            {{ project.etalon.replace(/(^\w+:|^)\/\//, '') }}
-          </a>
-        </li>
       </ul>
+
+      <div class="case__etalon" v-if="project.etalon">
+        <p>Etalon</p>
+
+        <a :href="project.etalon" target="_blank">
+          <b>{{ project.etalon.replace(/(^\w+:|^)\/\//, '') }}</b>
+        </a>
+      </div>
     </article>
 
     <Next v-if="nextCase" :to="nextCase.to" :isPageDark="false" isCase>
@@ -251,6 +261,7 @@ export default {
   mounted() {
     this.$store.dispatch('dom/toggleDark', false)
     this.observe()
+    window.$c = this.content
   },
   methods: {
     observe() {
@@ -288,7 +299,7 @@ export default {
 
 <style lang="sass" scoped>
 .case
-  padding: 24vh var(--unit) 37vh
+  padding: 24vh var(--unit) 0
 
   @media (max-width: $tab)
     padding: 168px var(--unit) 40px
@@ -303,10 +314,10 @@ export default {
 .case__cover
   width: 100vw
   margin-left: minus(var(--unit))
-  margin-bottom: 48px
+  margin-bottom: 24px
 
   @media (max-width: $tab)
-    margin-bottom: 16px
+    margin-bottom: 8px
   
   img
     display: block
@@ -336,15 +347,13 @@ export default {
   @media (max-width: $tab)
     margin-bottom: 40px
 
-.case__info-right b
-  margin-top: 32px
+.case__info-client
+  margin-top: 24px
   display: block
-
-  @media (max-width: $tab)
-    margin-top: 24px
 
 .case__info-right
   @media (min-width: $tab + 1)
+    width: columns(1)
     float: right
 
 .case__info-right:not(.case__info-right--inner)
@@ -378,16 +387,26 @@ export default {
     margin-top: 40px
 
 .case__content
-  margin-bottom: 120px
+  margin-bottom: 24px
 
-  @media (max-width: $tab)
-    margin-bottom: 24px
+.case__img-link
+  display: flex
+  align-items: center
+
+  img
+    margin-left: 2px
   
 .case__footer
   display: flex
   flex-wrap: wrap
-  margin-left: -12px
-  margin-top: -48px
+  
+  @media (min-width: $tab + 1)
+    padding-bottom: 240px
+    
+  @media (max-width: $tab)
+    margin-top: -48px
+    margin-left: -12px
+    padding-bottom: 48px
 
 .case__footer > li
   @media (max-width: $tab)
@@ -395,15 +414,21 @@ export default {
     margin-left: 12px
     width: calc(50% - 12px)
 
-
 .case__footer-list > li /deep/ b
   display: block
 
 .case__footer-list > li:not(:first-child) /deep/ b
-  margin-top: 32px
+  margin-top: 24px
 
-  @media (max-width: $tab)
-    margin-top: 24px
+.case__etalon
+  @media (min-width: $tab + 1)
+    padding-bottom: 48px
+    margin-left: auto
+    width: columns(1)
+
+.case__etalon a
+  display: block
+  margin-top: 2px
 
 .case__footer-content:not(.case__footer-content--inner)
   @media (max-width: $tab)
@@ -416,14 +441,6 @@ export default {
     display: none
 
 .case__footer > li
-  &:not(:last-child)
-    @media (min-width: $tab + 1)
-      width: mix(1)
-
-  &:last-child
-    @media (min-width: $tab + 1)
-      width: column-spans(1)
-      margin-left: auto
-
-.case__footer-list
+  @media (min-width: $tab + 1)
+    width: mix(1)
 </style>

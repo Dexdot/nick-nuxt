@@ -149,7 +149,7 @@ export default {
     align-self: flex-start
 
 .vision-container /deep/ i
-  +hoves(r)
+  +hoves(l)
   line-height: 0.96
   font-style: normal
   letter-spacing: -0.04em
