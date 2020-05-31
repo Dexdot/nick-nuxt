@@ -54,9 +54,7 @@
 
       <nuxt-link
         :class="[
-          'u-center',
-          'vision-link',
-          'vision-link--circle',
+          'u-center vision-link vision-link--circle',
           { 'vision-link--hidden': activeSlide !== slides.length - 1 }
         ]"
         to="/black"

@@ -1,7 +1,14 @@
 <template>
   <main>
     <article class="case">
-      <h1 class="case__title t-h1">{{ project.title }}</h1>
+      <h1
+        :class="[
+          'case__title t-h1',
+          { 'case__title--right': project.makeTitleRight }
+        ]"
+      >
+        {{ project.title }}
+      </h1>
 
       <div class="case__cover">
         <BaseImage
@@ -305,11 +312,13 @@ export default {
     padding: 168px var(--unit) 40px
 
 .case__title
-  text-align: right
   margin: 0 0 24px auto
 
   @media (max-width: $tab)
     margin: 0 0 8px auto
+
+.case__title--right
+  text-align: right
 
 .case__cover
   width: 100vw
