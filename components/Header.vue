@@ -19,10 +19,12 @@
         :class="['menu-btn', { active: isModalActive }]"
         @click="onMenuBtnClick"
       >
-        <span class="menu-btn__circle"></span>
-        <span class="menu-btn__circle"></span>
-        <span class="menu-btn__circle"></span>
-        <span class="menu-btn__circle"></span>
+        <div class="menu-btn__inner">
+          <span class="menu-btn__circle"></span>
+          <span class="menu-btn__circle"></span>
+          <span class="menu-btn__circle"></span>
+          <span class="menu-btn__circle"></span>
+        </div>
       </button>
     </div>
   </header>
@@ -98,12 +100,8 @@ export default {
 // Menu button
 .menu-btn
   display: flex
-  flex-wrap: wrap
-
   width: 24px
   height: 24px
-  margin-left: -4px
-  margin-top: -4px
 
   transition: transform 0.25s ease-in-out, opacity 0.25s ease
   transform-origin: 50% 50%
@@ -114,8 +112,12 @@ export default {
 .menu-btn.active
   transform: rotate(45deg)
 
-.menu-btn__circle:nth-child(2)
-  margin-right: 30%
+.menu-btn__inner
+  margin-left: auto
+  display: flex
+  flex-wrap: wrap
+  width: 12px
+  height: 12px
 
 .menu-btn__circle
   background: var(--color-text-lt)
@@ -123,8 +125,14 @@ export default {
 
   width: 4px
   height: 4px
-  margin-left: 4px
+
+.menu-btn__circle:nth-child(3),
+.menu-btn__circle:nth-child(4)
   margin-top: 4px
+
+.menu-btn__circle:nth-child(1),
+.menu-btn__circle:nth-child(3)
+  margin-right: 4px
 
 
 // Dark

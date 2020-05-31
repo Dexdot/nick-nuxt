@@ -14,34 +14,13 @@
         </ul>
       </nav>
 
-      <nav class="menu__social">
-        <ul class="u-flex u-aic">
-          <li>
-            <a
-              class="no-theme"
-              href="https://behance.net/stereocage"
-              target="_blank"
-              >behance</a
-            >
-          </li>
-          <li>
-            <a
-              class="no-theme"
-              href="https://dribbble.com/stereocage"
-              target="_blank"
-              >dribbble</a
-            >
-          </li>
-          <li>
-            <a
-              class="no-theme"
-              href="https://instagram.com/stereocage"
-              target="_blank"
-              >instagram</a
-            >
-          </li>
-        </ul>
-      </nav>
+      <a
+        href="https://instagram.com/stereocage"
+        target="_blank"
+        class="menu__social"
+      >
+        <img src="~assets/svg/instagram.svg" alt="Instagram" />
+      </a>
     </section>
   </transition>
 </template>
@@ -71,7 +50,8 @@ export default {
 .menu-enter
   pointer-events: none
 
-  nav li
+  nav li,
+  .menu__social
     opacity: 0
     transform: translateY(16px)
 
@@ -83,7 +63,8 @@ export default {
   pointer-events: auto
 
   .menu__overlay,
-  nav li
+  nav li,
+  .menu__social
     opacity: 1
     transform: translateY(0%)
 
@@ -91,37 +72,33 @@ export default {
 .menu-enter-active
   transition: 1s ease-in-out
 
-  .menu__overlay
+  .menu__overlay,
+  .menu__social
     transition: 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)
 
 @for $i from 1 through 4
   .menu-enter-active .menu__nav li:nth-child(#{$i})
     transition: 0.4s ease (#{$i*0.05s + 0.4s})
 
-.menu-enter-active .menu__social li
-  &:nth-child(1)
-    transition: 0.4s ease 0.55s
-  &:nth-child(2)
-    transition: 0.4s ease 0.5s
-  &:nth-child(3)
-    transition: 0.4s ease 0.45s
-
 
 /* LEAVE */
 .menu-leave
   pointer-events: auto
 
-  nav li
+  nav li,
+  .menu__social
     opacity: 1
 
-  .menu__overlay,
-  nav li
+  nav li,
+  .menu__social,
+  .menu__overlay
     transform: translateY(0%)
 
 .menu-leave-to
   pointer-events: none
 
-  nav li
+  nav li,
+  .menu__social
     opacity: 0
 
   .menu__overlay
@@ -130,20 +107,13 @@ export default {
 .menu-leave-active
   transition: 1s ease-in-out
 
-  .menu__overlay
+  .menu__overlay,
+  .menu__social
     transition: 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)
 
 @for $i from 1 through 4
   .menu-leave-active .menu__nav li:nth-child(#{$i})
     transition: 0.4s ease (#{$i*0.05s})
-
-.menu-leave-active .menu__social li
-  &:nth-child(1)
-    transition: 0.4s ease 0.2s
-  &:nth-child(2)
-    transition: 0.4s ease 0.15s
-  &:nth-child(3)
-    transition: 0.4s ease 0.1s
 
 
 // Menu styles
@@ -186,31 +156,17 @@ nav /deep/
 
 .menu__social
   position: absolute
-  bottom: 48px
-  left: calc(#{var(--unit)} + #{mix(1)})
+  bottom: 24px
+  right: var(--unit)
+
+  opacity: 0.4
+  transition: opacity $trs
+
+  &:hover
+    opacity: 1
 
   @media (max-width: $mob)
-    bottom: 24px
-    left: 50%
-    transform: translateX(-50%)
-
-  li:not(:first-child)
-    margin-left: 24px
-
-    @media (max-width: $mob)
-      margin-left: 16px
-
-    @media (max-width: 360px)
-      margin-left: 8px
-
-  a
-    +hoves(r)
-    font-size: 24px
-    opacity: 0.3
-
-    @media (max-width: $mob)
-      font-size: 16px
-
+    bottom: 16px
 
 // Link hover
 .menu__nav .menu__link,
