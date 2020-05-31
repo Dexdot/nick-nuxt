@@ -2,7 +2,7 @@
   <div
     :class="[
       'toggler u-center',
-      { 'toggler--dark': isDark, visible: isTouch ? !isScrolling : visible }
+      { 'toggler--dark': isDark, visible: !isScrolling }
     ]"
     :style="translateY"
   >
@@ -118,24 +118,16 @@ export default {
     }
   },
   data: () => ({
-    isTouch: false,
     isMobile: false,
     isScrolling: false,
     scrollY: 0,
-    scrollTimer: 0,
-    mousemoveTimer: 0,
-    visible: false
+    scrollTimer: 0
   }),
   mounted() {
-    this.isTouch = isTouchDevice()
-    this.visible = this.isTouch
-
     this.$root.$on('locoscroll', this.onScroll.bind(this))
-    window.addEventListener('mousemove', this.mousemove.bind(this))
   },
   destroyed() {
     this.$root.$off('locoscroll', this.onScroll)
-    window.removeEventListener('mousemove', this.mousemove)
   },
   methods: {
     onScroll({ scroll, lmS }) {
@@ -148,14 +140,6 @@ export default {
       this.scrollTimer = setTimeout(() => {
         this.isScrolling = false
       }, 50)
-    },
-    mousemove() {
-      this.visible = true
-
-      clearTimeout(this.mousemoveTimer)
-      this.mousemoveTimer = setTimeout(() => {
-        this.visible = false
-      }, 500)
     }
   }
 }
@@ -179,7 +163,7 @@ export default {
 
 .toggler
   position: fixed
-  top: calc(var(--vh, 1vh) * 92)
+  top: calc(calc(var(--vh, 1vh) * 100) - 40px)
   right: var(--unit)
 
   width: 16px

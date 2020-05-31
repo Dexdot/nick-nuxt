@@ -57,8 +57,11 @@
                   :alt="img.fields.title"
                 />
               </div>
-              <p v-if="i === 0" class="case-subtitle">
-                Московский бренд лаконичных украшений
+              <p
+                v-if="project.fields.shortSubtitle && i === 0"
+                class="case-subtitle"
+              >
+                {{ project.fields.shortSubtitle }}
               </p>
             </span>
 
@@ -85,16 +88,13 @@
                   :alt="img.fields.title"
                 />
               </div>
-              <p v-if="i === 0" class="case-subtitle">
-                Московский бренд лаконичных украшений
+              <p
+                v-if="project.fields.shortSubtitle && i === 0"
+                class="case-subtitle"
+              >
+                {{ project.fields.shortSubtitle }}
               </p>
             </nuxt-link>
-            <!-- <p
-              v-if="project.fields.shortSubtitle && i === 0"
-              class="case-subtitle"
-            >
-              {{ project.fields.shortSubtitle }}
-            </p> -->
           </li>
         </ul>
       </li>
@@ -242,44 +242,6 @@ export default {
     &::before
       color: #fff
 
-.main-title,
-.main-title-mob
-  &::before
-    content: 'soon'
-    position: absolute
-    top: 90%
-    right: 0
-
-    color: var(--color-text-lt)
-    +hoves(l)
-    font-size: 24px
-    text-align: center
-    white-space: nowrap
-    letter-spacing: 0
-
-    transition: 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0s
-    opacity: 0
-    transform: translate(0, 16px)
-
-    @media (max-width: $mob)
-      font-size: 18px
-      transition: 0.25s cubic-bezier(0.25, 0.1, 0.25, 1)
-
-  &.soon::before
-    transition: 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s
-    opacity: 1
-    transform: translate(0, 0)
-
-    @media (max-width: $mob)
-      transition: 0.25s cubic-bezier(0.25, 0.1, 0.25, 1)
-
-.main-soon
-  pointer-events: none
-  z-index: 1
-  position: fixed
-  top: 25vw
-  left: 50vw
-  margin-top: -0.5em
 
 .main-title
   pointer-events: none
@@ -345,18 +307,16 @@ export default {
   width: 100%
   height: 100%
   object-fit: cover
-  transition: transform .5s cubic-bezier(.455,.03,.515,.955)
+  transition: transform .8s cubic-bezier(.455,.03,.515,.955)
   transform: scaleX(1)
 
 .case li:first-child .img:hover
-  transform: scale3d(.95,.95,1)
-
   .case-subtitle
     opacity: 1
 
   img,
   video
-    transform: scale3d(1.15,1.15,1)
+    transform: scale3d(1.1, 1.1, 1)
 
 
 
