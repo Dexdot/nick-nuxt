@@ -3,7 +3,13 @@
     :class="['header', { 'header--dark': isHeaderDark, visible: !isScrolling }]"
   >
     <div class="container u-flex u-aic u-jcsb">
-      <nuxt-link class="header__logo" to="/">
+      <nuxt-link
+        :class="[
+          'header__logo',
+          { 'header__logo--hidden': $route.name === 'about' }
+        ]"
+        to="/"
+      >
         <img
           v-show="!isHeaderDark"
           src="~assets/svg/logo.svg"
@@ -91,6 +97,13 @@ export default {
 
 
 // Logo
+.header__logo
+  transition: opacity $trs
+  
+.header__logo--hidden
+  opacity: 0
+  pointer-events: none
+
 .header__logo img
   display: block
   width: 96px
