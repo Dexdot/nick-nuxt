@@ -268,7 +268,6 @@ export default {
   mounted() {
     this.$store.dispatch('dom/toggleDark', false)
     this.observe()
-    window.$c = this.content
   },
   methods: {
     observe() {

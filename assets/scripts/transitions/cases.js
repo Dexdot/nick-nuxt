@@ -2,48 +2,34 @@ import { gsap } from 'gsap';
 
 const enter = (el, cb) =>
   new Promise(resolve => {
-    const tl = gsap.timeline({
-      ease: 'circ.inOut',
-      onComplete: () => {
-        resolve();
-        if (cb) cb();
-      }
-    });
-
-    tl.fromTo(
-      '.cover',
-      {
-        y: '0%'
-      },
-      {
-        y: '-100%',
-        duration: 1
-      },
-      0
-    ).fromTo(
+    gsap.fromTo(
       el,
       {
-        y: 200
+        opacity: 0
       },
       {
-        y: 0,
-        duration: 1
-      },
-      0
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          resolve();
+          if (cb) cb();
+        }
+      }
     );
   });
 
 const leave = (el, cb) =>
   new Promise(resolve => {
     gsap.fromTo(
-      '.cover',
+      el,
       {
-        y: '100%'
+        opacity: 1
       },
       {
-        y: '0%',
-        duration: 0.8,
-        ease: 'circ.inOut',
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power2.inOut',
         onComplete: () => {
           resolve();
           if (cb) cb();

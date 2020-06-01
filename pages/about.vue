@@ -4,12 +4,7 @@
       <article class="about__text-wrap">
         <p class="about__date">2016-2020</p>
         <div class="about__text">
-          <p
-            v-for="(p, i) in content.text"
-            :key="i"
-            :style="{ '--delay': `${(i + 1) * 0.1}s` }"
-            v-html="render(p)"
-          ></p>
+          <p v-for="(p, i) in content.text" :key="i" v-html="render(p)"></p>
         </div>
       </article>
 
@@ -149,11 +144,24 @@ export default {
   mounted() {
     this.$store.dispatch('dom/toggleDark', true)
 
-    setTimeout(() => {
-      this.observe()
-    }, 400)
+    this.split()
   },
   methods: {
+    async split() {
+      await import('~/assets/scripts/split-text')
+      let split = new SplitText('.about__text p', { type: 'lines' })
+      split = new SplitText('.about__text p', {
+        type: 'lines',
+        linesClass: 'about__text-line'
+      })
+      split.lines.forEach((line, i) => {
+        line.style.setProperty('--delay', `${i * 0.05}s`)
+      })
+
+      setTimeout(() => {
+        this.observe()
+      }, 400)
+    },
     observe() {
       const elements = this.$el.querySelectorAll(`
         .about__text p,
@@ -425,9 +433,6 @@ export default {
 
 
 // OBSERVER ANIMATION
-.about__text p,
-.about__img-list li,
-.about__info-img,
 .about__info-contact li
   opacity: 0
   transition: .9s cubic-bezier(.215,.61,.355,1)
@@ -436,7 +441,25 @@ export default {
   &.visible
     opacity: 1
 
-// @for $i from 1 through 6
-//   .about__text-row:nth-child(#{$i})
-//     transition: 1.2s cubic-bezier(.215,.61,.355,1) (#{$i*0.1s})
+.about__info-img,
+.about__img-list li
+  opacity: 0
+  transform: translateY(104px)
+  transition: 0.8s cubic-bezier(0.45, 0, 0.55, 1)
+
+  &.visible
+    transform: translateY(0)
+    opacity: 1
+    
+
+.about__text /deep/ div
+  overflow: hidden
+
+.about__text /deep/ div > div
+  transform: translateY(100%)
+  transition: transform 0.8s cubic-bezier(0.33, 1, 0.68, 1)
+  transition-delay: var(--delay)
+
+.about__text p.visible /deep/ > div > div
+    transform: translateY(0)
 </style>

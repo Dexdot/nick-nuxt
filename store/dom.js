@@ -4,7 +4,8 @@ export const state = () => ({
   scrollDisabled: false,
   isDark: false,
   storiesPayload: null,
-  routeDir: {}
+  routeDir: {},
+  isRouteAnimating: false
 });
 
 export const getters = {
@@ -25,6 +26,9 @@ export const getters = {
   },
   routeDir({ routeDir }) {
     return routeDir;
+  },
+  isRouteAnimating({ isRouteAnimating }) {
+    return isRouteAnimating;
   }
 };
 
@@ -50,6 +54,9 @@ export const mutations = {
   },
   setRouteDir(state, routeDir) {
     state.routeDir = routeDir;
+  },
+  setRouteAnimating(state, isRouteAnimating) {
+    state.isRouteAnimating = isRouteAnimating;
   }
 };
 
@@ -82,5 +89,8 @@ export const actions = {
   },
   setRouteDir({ commit }, routeDir) {
     commit('setRouteDir', routeDir);
+  },
+  setRouteAnimating({ commit }, isRouteAnimating) {
+    commit('setRouteAnimating', isRouteAnimating);
   }
 };

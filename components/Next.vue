@@ -60,13 +60,16 @@ export default {
               this.$emit('notintersect', entry)
             }
 
+            const store = this.$store
+            if (store.getters['dom/isRouteAnimating']) return false
+
             if (entry.intersectionRatio >= 0.4) {
-              this.$store.dispatch('dom/toggleDark', this.isDark)
+              store.dispatch('dom/toggleDark', this.isDark)
               if (!this.isAnimating) {
                 this.startCount()
               }
             } else {
-              this.$store.dispatch('dom/toggleDark', this.isPageDark)
+              store.dispatch('dom/toggleDark', this.isPageDark)
               this.stopCount()
             }
           })

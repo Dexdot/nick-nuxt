@@ -3,9 +3,12 @@ import transitions from '~/assets/scripts/transitions/index';
 export default {
   mode: 'out-in',
   async enter(el, done) {
+    this.$store.dispatch('dom/setRouteAnimating', true);
+
     const routeDir = this.$store.getters['dom/routeDir'];
     const transitionEnter =
       routeDir.from.name === routeDir.to.name ? 'cases' : routeDir.to.name;
+
     await transitions[transitionEnter].enter(el);
     done();
   },
@@ -14,11 +17,12 @@ export default {
     const modalName = this.$store.getters['dom/modalName'];
     const isMenuActive = isModalActive && modalName === 'menu';
     const delay = isMenuActive ? 1040 : 0;
+
     if (isMenuActive) this.$store.dispatch('dom/toggleModal', '');
+    const routeDir = this.$store.getters['dom/routeDir'];
 
     // timeout - transition-duration
     setTimeout(async () => {
-      const routeDir = this.$store.getters['dom/routeDir'];
       const transitionLeave =
         routeDir.from.name === routeDir.to.name ? 'cases' : routeDir.from.name;
       await transitions[transitionLeave].leave(el);
@@ -27,6 +31,7 @@ export default {
       document.querySelector('.scroll-container').style.transform = '';
       window.scrollTo(0, 0);
 
+      this.$store.dispatch('dom/setRouteAnimating', false);
       done();
     }, delay);
   }

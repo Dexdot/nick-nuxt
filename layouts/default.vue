@@ -8,8 +8,6 @@
     <div class="scroll-container">
       <nuxt ref="page" />
     </div>
-
-    <div class="cover"></div>
   </div>
 </template>
 
@@ -91,17 +89,4 @@ a:not(.no-theme)
 
   color: var(--color-text-dk)
   background: var(--color-bg-dk)
-
-.cover
-  z-index: 10
-  position: fixed
-  top: 0
-  left: 0
-
-  width: 100vw
-  height: 100vh
-
-  background: #000
-  transform: translateY(100%)
-  will-change: transform
 </style>

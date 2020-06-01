@@ -3,6 +3,22 @@ import { gsap } from 'gsap';
 const enter = el =>
   new Promise(resolve => {
     const items = el.querySelectorAll('.case li');
+    const bg = el.querySelector('.black-bg__inner');
+
+    gsap.fromTo(
+      bg,
+      {
+        scale: 0
+      },
+      {
+        scale: 200,
+        duration: 0.9,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          gsap.set(bg, { opacity: 0, delay: 0.6 });
+        }
+      }
+    );
 
     gsap.set(items, { opacity: 0, willChange: 'transform, opacity' });
     gsap.fromTo(
