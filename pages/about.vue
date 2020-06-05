@@ -3,8 +3,21 @@
     <div class="about-container">
       <article class="about__text-wrap">
         <p class="about__date">2016-2020</p>
-        <div class="about__text">
+        <div
+          :class="[
+            'about__text about__text--desktop',
+            { 'about__text--animated': isTextAnimated }
+          ]"
+        >
           <p v-for="(p, i) in content.text" :key="i" v-html="render(p)"></p>
+        </div>
+        <div
+          :class="[
+            'about__text about__text--mob',
+            { 'about__text--animated': isTextAnimated }
+          ]"
+        >
+          <p v-for="(p, i) in mobileText" :key="i" v-html="render(p)"></p>
         </div>
       </article>
 
@@ -115,7 +128,37 @@ import page from '~/mixins/page'
 import render from '~/mixins/render'
 
 import Next from '~/components/Next'
-import { isImage, isVideo } from '~/assets/scripts/helpers'
+import { isImage, isVideo, hasUnderline, copy } from '~/assets/scripts/helpers'
+
+function createMobileText(content) {
+  let textIndex
+  let contentItemIndex
+  let underlinedItem
+
+  content.text.forEach((text, i) => {
+    text.content.forEach((item, j) => {
+      if (hasUnderline(item)) {
+        underlinedItem = copy({ ...item })
+        textIndex = i
+        contentItemIndex = j
+      }
+    })
+  })
+
+  if (underlinedItem) {
+    const textArray = copy([...content.text])
+    textArray[textIndex].content.splice(contentItemIndex, 1)
+    textArray.unshift({
+      data: {},
+      nodeType: 'paragraph',
+      content: [underlinedItem]
+    })
+
+    return textArray
+  }
+
+  return copy(content.text)
+}
 
 export default {
   mixins: [page, render],
@@ -139,28 +182,68 @@ export default {
     content.mediaList = [...fields.mediaList]
     content.mediaBig = { ...fields.mediaBig }
 
-    return { content }
+    const mobileText = createMobileText(content)
+
+    return {
+      isTextAnimated: false,
+      content,
+      mobileText
+    }
   },
   mounted() {
+    window.$about = this
     this.$store.dispatch('dom/toggleDark', true)
 
-    this.split()
+    this.$nextTick(() => {
+      this.split()
+    })
   },
   methods: {
     async split() {
       await import('~/assets/scripts/split-text')
-      let split = new SplitText('.about__text p', { type: 'lines' })
-      split = new SplitText('.about__text p', {
-        type: 'lines',
-        linesClass: 'about__text-line'
-      })
-      split.lines.forEach((line, i) => {
-        line.style.setProperty('--delay', `${i * 0.05}s`)
-      })
+
+      this.splitDesktop()
+      this.splitMob()
 
       setTimeout(() => {
         this.observe()
       }, 400)
+    },
+    splitDesktop(type) {
+      let split = new SplitText('.about__text--desktop p', { type: 'lines' })
+
+      split = new SplitText('.about__text--desktop p', {
+        type: 'lines',
+        linesClass: 'about__text-line'
+      })
+
+      split.lines.forEach((line, i) => {
+        line.style.setProperty('--delay', `${i * 0.05}s`)
+
+        if (i === split.lines.length - 1) {
+          line.addEventListener('transitionend', ({ propertyName }) => {
+            if (propertyName === 'transform') this.isTextAnimated = true
+          })
+        }
+      })
+    },
+    splitMob() {
+      let split = new SplitText('.about__text--mob p', { type: 'lines' })
+
+      split = new SplitText('.about__text--mob p', {
+        type: 'lines',
+        linesClass: 'about__text-line'
+      })
+
+      split.lines.forEach((line, i) => {
+        line.style.setProperty('--delay', `${i * 0.05}s`)
+
+        if (i === split.lines.length - 1) {
+          line.addEventListener('transitionend', ({ propertyName }) => {
+            if (propertyName === 'transform') this.isTextAnimated = true
+          })
+        }
+      })
     },
     observe() {
       const elements = this.$el.querySelectorAll(`
@@ -244,18 +327,24 @@ export default {
   -webkit-text-stroke-width: 1px
   -webkit-text-stroke-color: rgba(#fff, 0.6)
 
-.about__text p:nth-child(1)
+.about__text--mob
   @media (min-width: $tab-sm + 1)
-    max-width: 22.9em
+    display: none
 
-.about__text p:not(:nth-child(1))
-  padding-left: mix(1)
-
-  @media (max-width: $tab-sm)
+  p:nth-child(n + 3)
     padding-left: 80px
 
-.about__text p:nth-child(n + 3)
-  @media (min-width: $tab-sm + 1)
+.about__text--desktop
+  @media (max-width: $tab-sm)
+    display: none
+
+  p:nth-child(1)
+    max-width: 22.9em
+
+  p:not(:nth-child(1))
+    padding-left: mix(1)
+
+  p:nth-child(n + 3)
     padding-right: mix(1)
 
 .about__text p
@@ -352,7 +441,7 @@ export default {
     
   @media (max-width: $tab-sm)
     margin-bottom: 24px
-    width: calc(100% - #{var(--unit)} - 4.26vw)
+    width: calc(100% - #{var(--unit)})
 
   &::before
     content: ''
@@ -452,7 +541,7 @@ export default {
     opacity: 1
     
 
-.about__text /deep/ div
+.about__text:not(.about__text--animated) /deep/ div
   overflow: hidden
 
 .about__text /deep/ div > div
@@ -460,6 +549,6 @@ export default {
   transition: transform 0.8s cubic-bezier(0.33, 1, 0.68, 1)
   transition-delay: var(--delay)
 
-.about__text p.visible /deep/ > div > div
-    transform: translateY(0)
+.about__text p.visible /deep/ div
+  transform: translateY(0)
 </style>

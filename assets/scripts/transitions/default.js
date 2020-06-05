@@ -3,16 +3,18 @@ import transitions from '~/assets/scripts/transitions/index';
 export default {
   mode: 'out-in',
   async enter(el, done) {
-    this.$store.dispatch('dom/setRouteAnimating', true);
-
     const routeDir = this.$store.getters['dom/routeDir'];
     const transitionEnter =
       routeDir.from.name === routeDir.to.name ? 'cases' : routeDir.to.name;
 
     await transitions[transitionEnter].enter(el);
+    this.$store.dispatch('dom/setRouteAnimating', false);
+
     done();
   },
   leave(el, done) {
+    this.$store.dispatch('dom/setRouteAnimating', true);
+
     const isModalActive = this.$store.getters['dom/isModalActive'];
     const modalName = this.$store.getters['dom/modalName'];
     const isMenuActive = isModalActive && modalName === 'menu';
@@ -31,7 +33,6 @@ export default {
       document.querySelector('.scroll-container').style.transform = '';
       window.scrollTo(0, 0);
 
-      this.$store.dispatch('dom/setRouteAnimating', false);
       done();
     }, delay);
   }

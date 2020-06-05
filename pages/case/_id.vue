@@ -10,13 +10,24 @@
         {{ project.title }}
       </h1>
 
-      <div class="case__cover">
+      <div class="case__img case__cover">
         <BaseImage
           draggable="false"
           :img="project.cover"
           :alt="project.cover.fields.title"
           @complete="onBaseImageComplete"
         />
+
+        <div
+          class="case__stories-btn"
+          v-if="project.stories && project.stories.length > 1"
+        >
+          <ButtonPreview
+            ref="preview"
+            :list="project.stories"
+            @click="onStoriesBtnClick"
+          />
+        </div>
       </div>
 
       <h2 class="case__subtitle t-h2">{{ project.subtitle }}</h2>
@@ -36,12 +47,21 @@
             v-for="(item, i) in content"
             :key="i + item.nodeType"
             :class="{
+              'case__img-wrap': isImage(item) || isVideo(item),
               case__text: isText(item),
               case__block: isNotText(item),
               'case__block--first': item.isFirstBlock
             }"
-            :set="(isImgLink = content[i + 1] && isImage(content[i + 1]))"
           >
+            <a
+              class="case__url"
+              v-if="project.url && item.isFirstBlock"
+              :href="project.url"
+            >
+              <span>{{ project.urlText || project.url }}</span>
+              <img src="~assets/svg/arrow-up.svg" alt="Arrow" />
+            </a>
+
             <div
               class="case__info-right case__info-right--inner"
               v-if="item.isFirstBlock"
@@ -50,13 +70,25 @@
               <b>{{ project.client }}</b>
             </div>
 
-            <div class="case__img-link" v-if="isImgLink">
-              <p v-if="isText(item)" v-html="render(item)"></p>
-              <img
-                :src="content[i + 1].data.target.fields.file.url"
-                :alt="content[i + 1].data.target.fields.title"
-              />
-            </div>
+            <BaseImage
+              class="case__img"
+              draggable="false"
+              :img="item.data.target"
+              :alt="item.data.target.fields.title"
+              @complete="onBaseImageComplete"
+              v-if="isImage(item)"
+            />
+
+            <video
+              class="case__img"
+              v-if="isVideo(item)"
+              :src="item.data.target.fields.file.url"
+              draggable="false"
+              autoplay
+              playsinline
+              loop
+              muted
+            />
 
             <p v-else-if="isText(item)" v-html="render(item)"></p>
 
@@ -147,6 +179,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import ButtonPreview from '~/components/ButtonPreview'
 import Next from '~/components/Next'
 import CaseQuote from '~/components/CaseQuote'
 import CaseRow from '~/components/CaseRow'
@@ -160,6 +193,7 @@ import { fetchCase } from '~/api/cases'
 export default {
   mixins: [page, render],
   components: {
+    ButtonPreview,
     CaseQuote,
     CaseRow,
     CaseBlock,
@@ -259,15 +293,16 @@ export default {
     }
   },
   created() {
-    const firstBlock = this.project.content.content.find(block => {
-      return this.isNotText(block)
-    })
+    const firstBlock = this.project.content.content.find(block =>
+      this.isNotText(block)
+    )
 
     if (firstBlock) firstBlock.isFirstBlock = true
   },
   mounted() {
     this.$store.dispatch('dom/toggleDark', false)
     this.observe()
+    this.startPreviews()
   },
   methods: {
     observe() {
@@ -282,6 +317,21 @@ export default {
       elements.forEach(el => {
         this.observer.observe(el)
       })
+    },
+    startPreviews() {
+      if (this.project.stories && this.project.stories.length > 1)
+        this.$nextTick(this.$refs.preview.start)
+    },
+    onStoriesBtnClick() {
+      const { stories, title, date, etalon } = this.project
+
+      this.$store.dispatch('dom/setStoriesPayload', {
+        list: stories,
+        title: title,
+        subtitle: date,
+        url: etalon
+      })
+      this.$store.dispatch('dom/openModal', 'stories')
     },
     onBaseImageComplete(img) {
       this.observer.observe(img)
@@ -319,7 +369,10 @@ export default {
 .case__title--right
   text-align: right
 
-.case__cover
+.case__img-wrap
+  display: flex
+
+.case__img
   width: 100vw
   margin-left: minus(var(--unit))
   margin-bottom: 24px
@@ -332,9 +385,19 @@ export default {
     width: 100%
     height: auto
 
-    @media (max-width: $tab)
-      height: 100vh
-      object-fit: cover
+.case__cover
+  position: relative
+
+.case__cover img
+  @media (max-width: $tab)
+    height: 100vh
+    object-fit: cover
+
+.case__stories-btn
+  pointer-events: auto
+  position: absolute
+  right: var(--unit)
+  bottom: 24px
 
 .case__subtitle
   margin-bottom: 80px
@@ -388,18 +451,16 @@ export default {
   @media (max-width: $tab)
     margin-bottom: 8px
 
-.case__block--first
-  margin-top: 22vh
-
-  @media (max-width: $tab)
-    margin-top: 40px
-
 .case__content
   margin-bottom: 24px
 
-.case__img-link
-  display: flex
+.case__url
+  display: inline-flex
   align-items: center
+  margin: 24px 0 160px mix(1)
+
+  @media (max-width: $tab)
+    margin: 0 0 40px
 
   img
     margin-left: 2px

@@ -156,6 +156,8 @@ export default {
   pointer-events: auto
 
 .toggler svg
+  width: 16px
+  height: 16px
   stroke: var(--color-text-lt)
 
 .toggler--dark svg
@@ -163,9 +165,16 @@ export default {
 
 .toggler
   position: fixed
-  top: calc(calc(var(--vh, 1vh) * 100) - 40px)
+  top: calc(calc(var(--vh, 1vh) * 100) - 56px)
   right: var(--unit)
 
-  width: 16px
-  height: 16px
+  display: flex
+  align-items: flex-end
+  justify-content: flex-end
+
+  width: 40px
+  height: 40px
+
+  @media (max-width: $mob)
+    top: calc(calc(var(--vh, 1vh) * 100) - 48px)
 </style>

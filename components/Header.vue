@@ -2,7 +2,7 @@
   <header
     :class="['header', { 'header--dark': isHeaderDark, visible: !isScrolling }]"
   >
-    <div class="container u-flex u-aic u-jcsb">
+    <div class="container">
       <nuxt-link
         :class="[
           'header__logo',
@@ -95,6 +95,11 @@ export default {
 .header:not(.visible)
   opacity: 0
 
+.header .container
+  display: flex
+  align-items: flex-start
+  justify-content: space-between
+
 
 // Logo
 .header__logo
@@ -113,19 +118,21 @@ export default {
 // Menu button
 .menu-btn
   display: flex
-  width: 24px
-  height: 24px
+  width: 40px
+  height: 40px
 
-  transition: transform 0.25s ease-in-out, opacity 0.25s ease
-  transform-origin: 50% 50%
+  transition: opacity 0.25s ease
 
 .menu-btn:hover
   opacity: 0.3
 
-.menu-btn.active
+.menu-btn.active .menu-btn__inner
   transform: rotate(45deg)
 
 .menu-btn__inner
+  transition: transform 0.25s ease-in-out
+  transform-origin: 50% 50%
+  
   margin-left: auto
   display: flex
   flex-wrap: wrap

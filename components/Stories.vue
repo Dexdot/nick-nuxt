@@ -6,7 +6,7 @@
 
         <button
           class="stories-close"
-          @click="$store.dispatch('dom/toggleModal', '')"
+          @click="$store.dispatch('dom/closeModal', false)"
         >
           <svg
             width="32"
@@ -163,15 +163,14 @@ export default {
 .stories-head
   width: 100%
   display: flex
-  align-items: center
   justify-content: space-between
 
   position: absolute
-  top: 3.7%
+  top: 24px
   padding: 0 var(--unit)
 
-  @media (max-width: $tab)
-    top: 32px
+  @media (max-width: $tab-sm)
+    top: 8px
 
 .stories-section
   z-index: 3
@@ -181,7 +180,7 @@ export default {
   right: 0
   bottom: 0
 
-  padding-top: 13.4vh
+  padding-top: 80px
   width: 100vw
   height: 100vh
   height: calc(var(--vh, 1vh) * 100)
@@ -193,9 +192,9 @@ export default {
 
   background: #fff
 
-  @media (min-width: 1001px) and (max-width: 1440px) and (max-height: 700px)
-    align-items: flex-end
-    padding-bottom: 24px
+  // @media (min-width: 1001px) and (max-width: 1440px) and (max-height: 700px)
+  //   align-items: flex-end
+  //   padding-bottom: 24px
 
   @media (max-width: 1000px)
     padding-top: 0
@@ -223,7 +222,13 @@ export default {
 .story-img
   will-change: transform
   position: relative
-  width: mix(3)
+  width: 24vw
+
+  @media (min-width: $mob + 1) and (max-width: $tab)
+    width: 240px
+
+  @media (max-width: $mob)
+    width: calc(100vw - (2 * var(--unit)))
 
   &::before
     content: ''
@@ -233,9 +238,6 @@ export default {
 
     @media (max-width: $mob)
       padding-bottom: 160%
-
-  @media (max-width: $mob)
-    width: calc(100vw - (4 * var(--unit)))
 
 .story-img__i
   position: absolute
@@ -247,27 +249,18 @@ export default {
   object-fit: cover
 
 .swiper-slide
-  transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1)
+  margin: 0 8px
   width: auto
 
-  @media (max-width: $mob)
-    transition: transform 0.2s ease
-
   .story-img
-    margin-left: 1vw
-    margin-right: 1vw
+    transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1)
+
     @media (max-width: $mob)
-      margin-left: 0.27vw
-      margin-right: 0.27vw
+      transition: transform 0.2s ease
 
-.swiper-slide:not(.swiper-slide-active)
-  transform: scale(0.89)
+.swiper-slide:not(.swiper-slide-active) .story-img
+  transform: scale(0.88)
 
-  @media (max-width: $mob)
-    transform: scale(0.855)
-
-.swiper-slide-active
-  transform: scale(1)
 
 // Last slide url
 .swiper-slide--last
@@ -299,6 +292,6 @@ export default {
     &.long-text span
       font-size: 12px
 
-      @media (max-width: 1440px)
+      @media (max-width: $tab)
         font-size: 11px
 </style>

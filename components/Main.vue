@@ -103,6 +103,13 @@
     <nuxt-link style="display: block" :to="isDark ? '/' : '/black'">
       <Toggler />
     </nuxt-link>
+
+    <div
+      class="main-cover"
+      :style="{
+        transform: `translate3d(-50%, ${this.scroll.scroll.y}px, 0)`
+      }"
+    ></div>
   </main>
 </template>
 
@@ -112,6 +119,7 @@ import { gsap } from 'gsap'
 import charming from 'charming'
 
 import { isImage, isVideo } from '~/assets/scripts/helpers'
+import main from '~/assets/scripts/transitions/main'
 import Toggler from '~/ui/Toggler'
 
 export default {
@@ -144,6 +152,7 @@ export default {
     })
   },
   mounted() {
+    this.animateEnter()
     this.observeCases()
     this.onResize()
     window.addEventListener('resize', this.onResize.bind(this))
@@ -152,6 +161,13 @@ export default {
     window.removeEventListener('resize', this.onResize)
   },
   methods: {
+    animateEnter() {
+      if (document.readyState !== 'complete') {
+        window.addEventListener('load', () => {
+          main.enter(this.$el)
+        })
+      }
+    },
     observeCases() {
       const observer = new IntersectionObserver(
         entries => {
@@ -161,7 +177,7 @@ export default {
               !entry.isIntersecting &&
               entry.target.dataset.title === this.title
             ) {
-              this.showTitle(false)
+              this.hideTitle()
             }
 
             if (entry.intersectionRatio >= 1) {
@@ -223,6 +239,25 @@ export default {
         }
       )
     },
+    hideTitle() {
+      const { title } = this.$refs
+      if (!title) return false
+
+      const chars = title.querySelectorAll('span')
+      chars.forEach(char => {
+        if (char.textContent === ' ') char.classList.add('is-space')
+      })
+
+      this.isSoon = false
+
+      gsap.killTweensOf(chars)
+      gsap.to(chars, {
+        opacity: 0,
+        y: -40,
+        ease: 'power3.out',
+        duration: 0.6
+      })
+    },
     onResize() {
       this.isDesktop = window.innerWidth >= 500
     },
@@ -242,7 +277,15 @@ export default {
     &::before
       color: #fff
 
-
+.main-cover
+  z-index: 2
+  position: fixed
+  top: 0
+  left: 50%
+  width: 100%
+  height: 100%
+  pointer-events: none
+  
 .main-title
   pointer-events: none
   z-index: 1
@@ -309,6 +352,10 @@ export default {
   object-fit: cover
   transition: transform .8s cubic-bezier(.455,.03,.515,.955)
   transform: scaleX(1)
+
+.case li
+  opacity: 0
+  transform: translateY(60%)
 
 .case li:first-child .img:hover
   .case-subtitle

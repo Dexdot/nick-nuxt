@@ -26,30 +26,21 @@ const enter = el =>
 
 const leave = el =>
   new Promise(resolve => {
-    const items = el.querySelectorAll('.case li');
-    const nextEl = el.querySelector('.next');
     const h1 = el.querySelector('h1');
+    const nextEl = el.querySelector('.next');
+    const cases = el.querySelector('.cases');
+    const toggler = el.querySelector('.toggler').parentElement;
+    const elements = [h1, nextEl, cases, toggler];
 
-    gsap.to([nextEl, h1], { opacity: 0, duration: 0.7, ease: 'power4.inOut' });
+    gsap.to(elements, { opacity: 0, duration: 1, ease: 'power1.inOut' });
 
-    gsap.set(items, { willChange: 'transform, opacity' });
-    gsap.fromTo(
-      items,
-      {
-        opacity: 1,
-        y: '0%'
-      },
-      {
-        opacity: 0,
-        y: '-60%',
-        duration: 0.8,
-        ease: 'power4.inOut',
-        onComplete: () => {
-          gsap.set(items, { willChange: '' });
-          resolve();
-        }
-      }
-    );
+    const cover = el.querySelector('.main-cover');
+    gsap.to(cover, {
+      backdropFilter: 'blur(16px)',
+      duration: 1,
+      ease: 'power1.inOut'
+    });
+    setTimeout(resolve, 900);
   });
 
 export default { enter, leave };

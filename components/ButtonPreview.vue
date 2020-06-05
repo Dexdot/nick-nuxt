@@ -1,7 +1,7 @@
 <template>
   <ul class="previews-list" @click="$emit('click')">
     <li
-      :class="['previews-li', { 'previews-li--large': large }]"
+      class="previews-li"
       v-show="i === index"
       v-for="(item, i) in list"
       :key="i + item.fields.file.url"
@@ -22,7 +22,6 @@
           muted
           loop
         />
-        <img class="preview-play" src="~assets/svg/play.svg" alt="Play" />
       </button>
     </li>
   </ul>
@@ -69,42 +68,19 @@ export default {
 .previews-li
   position: relative
 
-  width: 64px
-  height: 64px
+  width: 96px
+  height: 96px
 
   display: flex
   align-items: center
   justify-content: center
 
-  border: 2px solid $purple
+  border: 2px solid #fff
   border-radius: 50%
-
-.preview-play
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translate(-50%, -50%)
-
-  width: 12px
-  height: 12px
 
 .preview-btn
-  width: 54px
-  height: 54px
+  width: 88px
+  height: 88px
   border-radius: 50%
   object-fit: cover
-
-.previews-li--large
-  border: 3px solid $purple
-
-  width: 80px
-  height: 80px
-
-  .preview-btn
-    width: 68px
-    height: 68px
-
-  .preview-play
-    width: 14px
-    height: 14px
 </style>

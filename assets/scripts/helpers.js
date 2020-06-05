@@ -1,5 +1,7 @@
 import client from '~/api/client';
 
+export const copy = el => JSON.parse(JSON.stringify(el));
+
 export const isImage = ({ fields }) =>
   fields.file.contentType.split('/')[0] === 'image';
 
@@ -143,4 +145,12 @@ export const getRandomEntries = (entries, n) => {
   }
 
   return randomEntries;
+};
+
+export const hasUnderline = el => {
+  const isText = el.nodeType === 'text';
+  const mark = el.marks[0];
+  if (!isText || !mark) return false;
+
+  return mark.type === 'underline';
 };

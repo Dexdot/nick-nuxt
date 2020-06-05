@@ -9,9 +9,9 @@
 
       <div class="next-row">
         <p class="next-text"><slot name="text"></slot></p>
-        <div class="next-img">
+        <nuxt-link class="next-img" :to="to">
           <slot name="image"></slot>
-        </div>
+        </nuxt-link>
       </div>
     </div>
   </section>
@@ -21,14 +21,14 @@
 export default {
   props: {
     to: { type: [String, Object], default: '/' },
+    duration: { type: Number, default: 5000 },
     isCase: { type: Boolean, default: false },
     isPageDark: { type: Boolean, default: true },
     isDark: { type: Boolean, default: true }
   },
   data: () => ({
     isAnimating: false,
-    timer: 0,
-    duration: 5000
+    timer: 0
   }),
   mounted() {
     this.observe()
@@ -61,7 +61,8 @@ export default {
             }
 
             const store = this.$store
-            if (store.getters['dom/isRouteAnimating']) return false
+            const isRouteAnimating = store.getters['dom/isRouteAnimating']
+            if (isRouteAnimating) return false
 
             if (entry.intersectionRatio >= 0.4) {
               store.dispatch('dom/toggleDark', this.isDark)
@@ -115,6 +116,7 @@ export default {
     flex: 1
 
 .next-img
+  display: block
   width: columns(1)
   position: relative
 
@@ -128,7 +130,7 @@ export default {
     width: 100%
     padding-top: 56.25%
 
-  img, video
+  /deep/ img, video
     position: absolute
     top: 0
     left: 0

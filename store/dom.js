@@ -64,8 +64,8 @@ export const actions = {
   toggleDark({ commit }, isDark) {
     commit('toggleDark', isDark);
   },
-  closeModal({ commit, state }, modalName) {
-    commit('setModalName', modalName);
+  closeModal({ commit, state }) {
+    commit('setModalName', '');
     commit('toggleModal', false);
     commit('enableScroll');
   },

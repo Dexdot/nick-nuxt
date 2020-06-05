@@ -21,7 +21,7 @@ export default {
 
 <style lang="sass" scoped>
 .case-quote
-  padding: 216px 0 216px mix(1)
+  padding: 24px 0 24px mix(1)
   
   @media (max-width: $tab)
     padding: 8px 0 32px

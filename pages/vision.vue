@@ -67,6 +67,8 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 import page from '~/mixins/page'
 import render from '~/mixins/render'
 import { getSlidesByHr } from '~/assets/scripts/helpers'
@@ -89,27 +91,34 @@ export default {
   },
   mounted() {
     this.$store.dispatch('dom/toggleDark', false)
-    this.enterAnimation()
+
+    this.$nextTick(() => {
+      if (document.readyState == 'complete') {
+        setTimeout(() => {
+          this.enterAnimation()
+        }, 400)
+      } else {
+        window.addEventListener('load', this.enterAnimation.bind(this))
+      }
+    })
   },
   methods: {
     enterAnimation() {
-      this.$nextTick(() => {
-        const { quotes, circle } = this.$refs
+      const { quotes, circle } = this.$refs
 
-        if (quotes) {
-          setTimeout(() => {
-            quotes.classList.add('blur')
-          }, 200)
+      if (quotes) {
+        setTimeout(() => {
+          quotes.classList.add('blur')
+        }, 200)
 
-          setTimeout(() => {
-            quotes.classList.add('is-faster')
-          }, 2200)
-        }
+        setTimeout(() => {
+          quotes.classList.add('is-faster')
+        }, 2200)
+      }
 
-        if (circle) {
-          this.isCircleAnimated = true
-        }
-      })
+      if (circle) {
+        this.isCircleAnimated = true
+      }
     },
     onCircleClick() {
       if (window.innerWidth <= 768) this.onClick('next')
@@ -119,6 +128,13 @@ export default {
 
       this.$refs.quotes.classList.remove('blur')
       this.$refs.quotes.addEventListener('transitionend', this.onTransitionEnd)
+
+      gsap.to('.vision-circle img', {
+        opacity: 0,
+        scale: 2,
+        duration: 1,
+        ease: 'powe2.inOut'
+      })
     },
     onTransitionEnd({ propertyName }) {
       if (propertyName !== 'opacity') return false
@@ -136,6 +152,19 @@ export default {
 
       quotes.classList.add('blur')
       quotes.removeEventListener('transitionend', this.onTransitionEnd)
+      gsap.fromTo(
+        '.vision-circle img',
+        {
+          opacity: 0,
+          scale: 0
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: 'powe2.inOut'
+        }
+      )
     }
   }
 }
@@ -153,6 +182,9 @@ export default {
   padding: 0 var(--unit)
   overflow: hidden
   flex-direction: column
+
+.vision-container p:first-child
+  text-align: right
 
 .vision-container p:not(:first-child)
   line-height: 1.2
@@ -183,7 +215,7 @@ export default {
   width: 40vw
   height: 40vw
 
-  transition: transform 1s ease-out, opacity 0.3s ease
+  transition: transform 1s ease-out, opacity 1s ease
 
   @media (min-width: $tab-sm + 1)
     pointer-events: none
@@ -236,7 +268,6 @@ export default {
 
   @media (max-width: $tab-sm)
     transform: translate(-50%, 0) scale(1)
-
 
 .vision-link
   transition: opacity 0.3s ease

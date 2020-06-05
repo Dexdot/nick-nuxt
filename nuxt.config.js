@@ -137,7 +137,7 @@ module.exports = {
   /*
    ** Progress bar color
    */
-  loading: { color: '#FDC616' },
+  loading: { color: '#000000' },
   /**
    * style-resources
    */
