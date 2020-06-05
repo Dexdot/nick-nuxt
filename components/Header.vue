@@ -117,7 +117,7 @@ export default {
 
 // Menu button
 .menu-btn
-  display: flex
+  position: relative
   width: 40px
   height: 40px
 
@@ -133,7 +133,10 @@ export default {
   transition: transform 0.25s ease-in-out
   transform-origin: 50% 50%
   
-  margin-left: auto
+  position: absolute
+  top: 0
+  right: 0
+
   display: flex
   flex-wrap: wrap
   width: 12px
@@ -143,6 +146,7 @@ export default {
   background: var(--color-text-lt)
   border-radius: 50%
 
+  min-width: 4px
   width: 4px
   height: 4px
 
