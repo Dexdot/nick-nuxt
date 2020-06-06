@@ -34,6 +34,7 @@
           to="/black"
           type="button"
         >
+          <span>Black</span>
           <img src="~assets/svg/moon.svg" alt="Moon" />
         </nuxt-link>
       </div>
@@ -42,26 +43,36 @@
         :class="[
           'vision-circle',
           { 'vision-circle--animated': isCircleAnimated },
-          { 'vision-circle--hidden': activeSlide === slides.length - 1 }
+          { 'vision-circle--last': activeSlide === slides.length - 1 }
         ]"
+        :data-index="activeSlide + 1"
         ref="circle"
         type="button"
         @click="onCircleClick"
       >
-        <img src="~assets/img/vision-circle.png" alt="Circle" />
-        <img src="~assets/img/vision-circle-2.png" alt="Circle" />
+        <img
+          class="vision-circle__img"
+          src="~assets/img/vision-circle.png"
+          alt="Circle"
+        />
+        <img
+          class="vision-circle__img"
+          src="~assets/img/vision-circle-2.png"
+          alt="Circle"
+          ref="circle1"
+        />
+        <img
+          class="vision-circle__img vision-circle__img--black"
+          src="~assets/img/vision-circle-black.png"
+          alt="Circle"
+          ref="circleb"
+        />
+        <img
+          class="vision-circle__moon"
+          src="~assets/svg/moon-w.svg"
+          alt="Moon"
+        />
       </button>
-
-      <nuxt-link
-        :class="[
-          'u-center vision-link vision-link--circle',
-          { 'vision-link--hidden': activeSlide !== slides.length - 1 }
-        ]"
-        to="/black"
-        type="button"
-      >
-        <img src="~assets/svg/moon.svg" alt="Moon" />
-      </nuxt-link>
     </section>
   </main>
 </template>
@@ -121,7 +132,13 @@ export default {
       }
     },
     onCircleClick() {
-      if (window.innerWidth <= 768) this.onClick('next')
+      if (window.innerWidth > 768) return false
+
+      if (this.activeSlide !== this.slides.length - 1) {
+        this.onClick('next')
+      } else {
+        this.$router.push('/black')
+      }
     },
     onClick(dir = 'next') {
       this.dir = dir
@@ -129,12 +146,7 @@ export default {
       this.$refs.quotes.classList.remove('blur')
       this.$refs.quotes.addEventListener('transitionend', this.onTransitionEnd)
 
-      gsap.to('.vision-circle img', {
-        opacity: 0,
-        scale: 2,
-        duration: 1,
-        ease: 'powe2.inOut'
-      })
+      this.animateCircle(0.56)
     },
     onTransitionEnd({ propertyName }) {
       if (propertyName !== 'opacity') return false
@@ -152,19 +164,22 @@ export default {
 
       quotes.classList.add('blur')
       quotes.removeEventListener('transitionend', this.onTransitionEnd)
-      gsap.fromTo(
-        '.vision-circle img',
-        {
-          opacity: 0,
-          scale: 0
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 1,
-          ease: 'powe2.inOut'
+      this.animateCircle(1)
+    },
+    animateCircle(scale) {
+      if (window.innerWidth > 768) return false
+
+      const items = [this.$refs.circle1, this.$refs.circleb]
+      gsap.set(items, { transition: 'unset' })
+
+      gsap.to(items, {
+        scale,
+        duration: 0.8,
+        ease: 'power1.inOut',
+        onComplete: () => {
+          gsap.set(items, { transition: '' })
         }
-      )
+      })
     }
   }
 }
@@ -212,37 +227,22 @@ export default {
   position: absolute
   left: 50%
 
-  width: 40vw
-  height: 40vw
+  width: 50vw
+  height: 50vw
 
-  transition: transform 1s ease-out, opacity 1s ease
+  transition: 1s ease
 
   @media (min-width: $tab-sm + 1)
     pointer-events: none
     top: 50%
-    transform: translate(-50%, -50%) scale(0)
+    transform: translate(-50%, -50%)
 
   @media (max-width: $tab-sm)
     width: 200px
     height: 200px
 
     bottom: -16px
-    transform: translate(-50%, 0) scale(0)
-
-  img
-    width: 100%
-    height: 100%
-    object-fit: contain
-
-    &:first-child
-      opacity: 0.8
-
-      @media (max-width: $tab-sm)
-        display: none
-
-    &:last-child
-      @media (min-width: $tab-sm + 1)
-        display: none
+    transform: translate(-50%, 0)
 
   &::before
     @media (max-width: $tab-sm)
@@ -251,45 +251,86 @@ export default {
       width: 56px
       height: 56px
 
+      z-index: 1
       position: absolute
       top: 50%
       left: 50%
       transform: translate(-50%, -50%)
 
       border-radius: 50%
+      transition: $trs
       border: 1px solid #000
 
-.vision-circle--hidden
-  @media (max-width: $tab-sm)
-    opacity: 0
+.vision-circle__img
+  width: 100%
+  height: 100%
+  object-fit: contain
+  transition: opacity $trs
 
-.vision-circle--animated
-  transform: translate(-50%, -50%) scale(1)
+  &:nth-child(1)
+    @media (max-width: $tab-sm)
+      display: none
 
-  @media (max-width: $tab-sm)
-    transform: translate(-50%, 0) scale(1)
+.vision-circle__img:nth-child(2),
+.vision-circle__img--black
+  @media (min-width: $tab-sm + 1)
+    display: none
 
-.vision-link
-  transition: opacity 0.3s ease
-
-.vision-link--circle
+.vision-circle__img--black,
+.vision-circle__moon
   position: absolute
-  bottom: 56px
+  top: 50%
   left: 50%
-  transform: translate(-50%, 0)
-  
-  width: 56px
-  height: 56px
+  transform: translate(-50%, -50%)
 
-  border-radius: 50%
-  border: 1px solid #000
+.vision-circle__moon
+  width: 16px
+  height: 16px
+
+  transition: opacity $trs
+  pointer-events: none
+  opacity: 0
 
   @media (min-width: $tab-sm + 1)
     display: none
 
-  img
-    width: 16px
-    height: 16px
+.vision-circle:not(.vision-circle--animated)
+  opacity: 0
+
+.vision-circle[data-index="1"]
+  @media (min-width: $tab-sm + 1)
+    transform: translate(-50%, -50%) scale(0.6)
+
+.vision-circle[data-index="2"]
+  @media (min-width: $tab-sm + 1)
+    transform: translate(-50%, -50%) scale(0.8)
+
+.vision-circle[data-index="3"]
+  @media (min-width: $tab-sm + 1)
+    transform: translate(-50%, -50%) scale(1)
+
+  .vision-circle__moon
+    opacity: 1
+
+.vision-circle:not(.vision-circle--last)
+  .vision-circle__img--black
+    @media (max-width: $tab-sm)
+      opacity: 0
+
+.vision-circle--last
+  &::before
+    border: 1px solid #c4c4c4
+
+  .vision-circle__img:not(.vision-circle__img--black)
+    @media (max-width: $tab-sm)
+      opacity: 0
+
+  .vision-circle__img--black
+    @media (max-width: $tab-sm)
+      opacity: 1
+
+.vision-link
+  transition: opacity 0.3s ease
 
 .vision-link--hidden
   opacity: 0
@@ -313,6 +354,10 @@ export default {
 
   .vision-link
     margin-left: auto
+
+    img
+      margin-top: 2px
+      margin-left: 4px
 
 .quotes
   position: relative

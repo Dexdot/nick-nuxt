@@ -12,72 +12,13 @@
       height="16"
       viewBox="0 0 16 16"
       fill="none"
+      stroke-width="0"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0)">
-        <path
-          d="M8 0.666504V1.99984"
-          stroke="white"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M8 14V15.3333"
-          stroke="white"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M2.81323 2.81348L3.7599 3.76014"
-          stroke="white"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M12.24 12.2402L13.1867 13.1869"
-          stroke="white"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M0.666748 8H2.00008"
-          stroke="white"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M14 8H15.3333"
-          stroke="white"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M2.81323 13.1869L3.7599 12.2402"
-          stroke="white"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M12.24 3.76014L13.1867 2.81348"
-          stroke="white"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <circle cx="8" cy="8" r="3" fill="white" />
-      </g>
-      <defs>
-        <clipPath id="clip0">
-          <rect width="16" height="16" fill="white" />
-        </clipPath>
-      </defs>
+      <path
+        d="M0.8 8.8C4.32896 8.8 7.2 11.671 7.2 15.2C7.2 15.6418 7.55824 16 8 16C8.44176 16 8.8 15.6418 8.8 15.2C8.8 11.671 11.671 8.8 15.2 8.8C15.6418 8.8 16 8.44176 16 8C16 7.55824 15.6418 7.2 15.2 7.2C11.671 7.2 8.8 4.32896 8.8 0.8C8.8 0.35824 8.44176 0 8 0C7.55824 0 7.2 0.35824 7.2 0.8C7.2 4.32896 4.32896 7.2 0.8 7.2C0.35824 7.2 0 7.55824 0 8C0 8.44176 0.35824 8.8 0.8 8.8ZM8 4.28568C8.78528 5.9012 10.0987 7.21464 11.7143 8C10.0988 8.78528 8.78536 10.0987 8 11.7143C7.21472 10.0988 5.90128 8.78536 4.28568 8C5.90128 7.21472 7.21472 5.90128 8 4.28568Z"
+        fill="white"
+      />
     </svg>
 
     <svg
