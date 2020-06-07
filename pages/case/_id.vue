@@ -3,11 +3,11 @@
     <article class="case">
       <h1
         :class="[
-          'case__title t-h1',
+          'case__title case__title--main t-h1',
           { 'case__title--right': project.makeTitleRight }
         ]"
       >
-        {{ project.title }}
+        <span>{{ project.title }}</span>
       </h1>
 
       <div class="case__img case__cover">
@@ -15,7 +15,7 @@
           draggable="false"
           :img="project.cover"
           :alt="project.cover.fields.title"
-          @complete="onBaseImageComplete"
+          @complete="onCoverLoadComplete"
         />
 
         <div
@@ -160,21 +160,63 @@
       </div>
     </article>
 
-    <Next v-if="nextCase" :to="nextCase.to" :isPageDark="false" isCase>
-      <span slot="title">{{ nextCase.title }}</span>
+    <Next v-if="nextContent" :to="nextContent.to" :isPageDark="false" isCase>
+      <span slot="title"
+        ><span>{{ nextContent.title }}</span></span
+      >
       <span slot="text">
-        {{ nextCase.subtitle }}
+        {{ nextContent.subtitle }}
       </span>
       <BaseImage
         slot="image"
-        v-if="nextCase.cover"
-        :img="nextCase.cover"
-        :alt="nextCase.cover.fields.title"
+        v-if="nextContent.cover"
+        :img="nextContent.cover"
+        :alt="nextContent.cover.fields.title"
       />
     </Next>
+
+    <div
+      class="case-fixed"
+      v-if="nextCase"
+      :style="translateY"
+      :key="nextCase.title"
+    >
+      <div class="nextcase">
+        <h2
+          :class="[
+            'case__title t-h1',
+            { 'case__title--right': nextCase.makeTitleRight }
+          ]"
+        >
+          <span>{{ nextCase.title }}</span>
+        </h2>
+
+        <div class="case__img case__cover">
+          <BaseImage
+            draggable="false"
+            :img="nextCase.cover"
+            :alt="nextCase.cover.fields.title"
+          />
+        </div>
+      </div>
+
+      <div class="movable-title">
+        <h2
+          :class="[
+            'case__title t-h1',
+            { 'case__title--right': nextCase.makeTitleRight }
+          ]"
+        >
+          <span>{{ nextCase.title }}</span>
+        </h2>
+      </div>
+
+      <div class="movable-image">
+        <BaseImage :img="nextCase.cover" :alt="nextCase.cover.fields.title" />
+      </div>
+    </div>
   </main>
 </template>
-
 
 <script>
 import { mapGetters } from 'vuex'
@@ -258,7 +300,7 @@ export default {
       }
     }
 
-    return { project }
+    return { project, nextCase: null }
   },
   computed: {
     ...mapGetters({
@@ -267,21 +309,17 @@ export default {
     content() {
       return this.project ? this.project.content.content : {}
     },
-    nextCase() {
-      let nextCase = {
+    nextContent() {
+      let nextContent = {
         title: 'About',
         subtitle: 'Digital designer & art director from St.Petersburg',
         to: '/about'
       }
 
-      const filteredCases = this.cases.filter(
-        v => v.fields.slug !== this.$route.params.id && !v.fields.soon
-      )
-      const randomCase = getRandomEntries(filteredCases, 1)[0]
-      if (randomCase && 'fields' in randomCase) {
-        const { title, subtitle, slug, cover } = randomCase.fields
+      if (this.nextCase) {
+        const { title, subtitle, cover, slug } = this.nextCase
 
-        nextCase = {
+        nextContent = {
           title,
           subtitle,
           cover,
@@ -289,22 +327,52 @@ export default {
         }
       }
 
-      return nextCase
+      return nextContent
     }
   },
   created() {
+    this.updateNextCase()
+
     const firstBlock = this.project.content.content.find(block =>
       this.isNotText(block)
     )
-
     if (firstBlock) firstBlock.isFirstBlock = true
   },
   mounted() {
+    window.addEventListener('popstate', this.onPopState.bind(this))
     this.$store.dispatch('dom/toggleDark', false)
     this.observe()
     this.startPreviews()
   },
   methods: {
+    onPopState() {
+      if (this.$route.name !== 'case-id') return false
+
+      const slug = window.location.pathname.split('case/')[1].split('/')[0]
+      if (slug) {
+        const nextCase = this.cases.find(v => v.fields.slug === slug)
+        this.updateNextCase(nextCase)
+      }
+    },
+    updateNextCase(nextCaseProp) {
+      let nextCase
+
+      if (nextCaseProp) {
+        nextCase = nextCaseProp.fields
+      } else {
+        const filteredCases = this.cases.filter(
+          v => v.fields.slug !== this.$route.params.id && !v.fields.soon
+        )
+
+        const randomCase = getRandomEntries(filteredCases, 1)[0]
+        if (randomCase && 'fields' in randomCase) {
+          nextCase = randomCase.fields
+        }
+      }
+
+      this.nextCase = nextCase
+      this.updateScroll()
+    },
     observe() {
       const elements = this.$el.querySelectorAll(`.case__content > li`)
 
@@ -333,6 +401,16 @@ export default {
       })
       this.$store.dispatch('dom/openModal', 'stories')
     },
+    onCoverLoadComplete(img) {
+      const cover = document.querySelector('.case-cover-placeholder')
+      if (cover) {
+        cover.remove()
+        document.body.classList.remove('no-scroll')
+        this.startScroll()
+      }
+
+      this.onBaseImageComplete(img)
+    },
     onBaseImageComplete(img) {
       this.observer.observe(img)
     },
@@ -352,8 +430,38 @@ export default {
 }
 </script>
 
-
 <style lang="sass" scoped>
+.case-fixed
+  position: fixed
+  top: 0
+  right: 0
+  width: 100%
+  pointer-events: none
+
+.nextcase
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+
+  opacity: 0
+
+.movable-title,
+.movable-image
+  position: absolute
+  top: 0
+  left: 0
+  opacity: 0
+
+.movable-image img
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  object-fit: cover
+
+.nextcase,
 .case
   padding: 24vh var(--unit) 0
 
@@ -361,13 +469,20 @@ export default {
     padding: 168px var(--unit) 40px
 
 .case__title
+  display: flex
   margin: 0 0 24px auto
 
   @media (max-width: $tab)
     margin: 0 0 8px auto
 
+  span
+    display: block
+
 .case__title--right
-  text-align: right
+  justify-content: flex-end
+
+.case__title--main
+  overflow: hidden
 
 .case__img-wrap
   display: flex

@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 
-const enter = el =>
+const enter = ({ el }) =>
   new Promise(resolve => {
     const items = el.querySelectorAll('.case li');
 
@@ -24,7 +24,7 @@ const enter = el =>
     );
   });
 
-const leave = el =>
+const leave = ({ el }) =>
   new Promise(resolve => {
     const h1 = el.querySelector('h1');
     const nextEl = el.querySelector('.next');

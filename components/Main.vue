@@ -5,7 +5,7 @@
         v-if="isDesktop"
         :class="['main-title', 't-h2', { soon: isSoon }]"
         :style="{
-          transform: `translate3d(-50%, ${this.scroll.scroll.y}px, 0)`
+          transform: `translate3d(-50%, ${scrollY}px, 0)`
         }"
         ref="title"
       ></h1>
@@ -14,7 +14,7 @@
         v-show="!isNextVisible"
         :class="['main-title-mob', 't-h1', { soon: isSoon }]"
         :style="{
-          transform: `translate3d(-50%, ${this.scroll.scroll.y}px, 0)`
+          transform: `translate3d(-50%, ${scrollY}px, 0)`
         }"
         ref="title-mob"
       >
@@ -107,7 +107,7 @@
     <div
       class="main-cover"
       :style="{
-        transform: `translate3d(-50%, ${this.scroll.scroll.y}px, 0)`
+        transform: `translate3d(-50%, ${scrollY}px, 0)`
       }"
     ></div>
   </main>
@@ -149,7 +149,10 @@ export default {
   computed: {
     ...mapGetters({
       isDark: 'dom/isDark'
-    })
+    }),
+    scrollY() {
+      return this.scroll.lmS.smooth ? this.scroll.scroll.y : 0
+    }
   },
   mounted() {
     this.animateEnter()
@@ -164,7 +167,7 @@ export default {
     animateEnter() {
       if (document.readyState !== 'complete') {
         window.addEventListener('load', () => {
-          main.enter(this.$el)
+          main.enter({ el: this.$el })
         })
       }
     },

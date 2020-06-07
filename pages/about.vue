@@ -191,7 +191,6 @@ export default {
     }
   },
   mounted() {
-    window.$about = this
     this.$store.dispatch('dom/toggleDark', true)
 
     this.$nextTick(() => {

@@ -2,15 +2,32 @@ import { gsap } from 'gsap';
 
 const enter = ({ el, cb }) =>
   new Promise(resolve => {
+    const duration = 0.9;
+    const ease = 'power2.inOut';
+
     gsap.fromTo(
-      el,
+      '.case__title--main span',
+      {
+        translateY: '100%',
+        opacity: 0
+      },
+      {
+        translateY: '0%',
+        opacity: 1,
+        duration,
+        ease
+      }
+    );
+
+    gsap.fromTo(
+      '.case__subtitle, .case__cover',
       {
         opacity: 0
       },
       {
         opacity: 1,
-        duration: 0.8,
-        ease: 'power2.inOut',
+        duration,
+        ease,
         onComplete: () => {
           resolve();
           if (cb) cb();

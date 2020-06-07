@@ -9,6 +9,7 @@ export default {
         smooth: true,
         getDirection: true
       });
+      window.lmS = this.lmS;
 
       // Handle scroll event
       this.lmS.on('scroll', e => {
@@ -34,16 +35,21 @@ export default {
   },
   data: () => ({
     isScrolling: false,
-    scroll: { scroll: { x: 0, y: 0 } },
+    scroll: { scroll: { x: 0, y: 0 }, lmS: { smooth: false } },
     lmS: null
   }),
   computed: {
     translateY() {
-      return process.client
-        ? {
-            transform: `translate3d(0, ${this.scrollY}px, 0)`
-          }
-        : {};
+      if (process.client && this.lmS) {
+        const prop = this.lmS.isMobile ? 'smoothMobile' : 'smooth';
+        const y = this.lmS[prop] ? this.scrollY : 0;
+
+        return {
+          transform: `translate3d(0, ${y}px, 0)`
+        };
+      }
+
+      return {};
     },
     scrollY() {
       return this.scroll.scroll.y;
@@ -85,14 +91,10 @@ export default {
       if (this.lmS) this.lmS.update();
     },
     stopScroll() {
-      // this.toggleScrollbar(false)
-
       // Stop scroll
       if (this.lmS) this.lmS.stop();
     },
     startScroll() {
-      // this.toggleScrollbar(true)
-
       // Start scroll
       if (this.lmS) this.lmS.start();
     },

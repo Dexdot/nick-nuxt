@@ -51,15 +51,12 @@ export default {
     translateY() {
       return process.client
         ? {
-            transform: `translate3d(0, ${
-              this.isMobile ? 0 : this.scrollY
-            }px, 0)`
+            transform: `translate3d(0, ${this.scrollY}px, 0)`
           }
         : {}
     }
   },
   data: () => ({
-    isMobile: false,
     isScrolling: false,
     scrollY: 0,
     scrollTimer: 0
@@ -75,8 +72,8 @@ export default {
       clearTimeout(this.scrollTimer)
       this.isScrolling = true
 
-      this.scrollY = scroll.y
-      this.isMobile = lmS.isMobile
+      const prop = lmS.isMobile ? 'smoothMobile' : 'smooth'
+      this.scrollY = lmS[prop] ? scroll.y : 0
 
       this.scrollTimer = setTimeout(() => {
         this.isScrolling = false
