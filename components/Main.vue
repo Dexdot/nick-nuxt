@@ -119,7 +119,7 @@ import { gsap } from 'gsap'
 import charming from 'charming'
 
 import { isImage, isVideo } from '~/assets/scripts/helpers'
-import main from '~/assets/scripts/transitions/main'
+import mainTransition from '~/assets/scripts/transitions/main'
 import Toggler from '~/ui/Toggler'
 
 export default {
@@ -167,7 +167,7 @@ export default {
     animateEnter() {
       if (document.readyState !== 'complete') {
         window.addEventListener('load', () => {
-          main.enter({ el: this.$el })
+          mainTransition.enter({ el: this.$el })
         })
       }
     },
