@@ -67,7 +67,8 @@ export const getImageUrl = (img, useOriginalSizeOnMob = false) => {
 
   const params = {
     ...fmfl,
-    w: supports.isMob ? (useOriginalSizeOnMob ? '' : '1125') : '',
+    // w: supports.isMob ? (useOriginalSizeOnMob ? '' : '1125') : '',
+    w: '',
     fit: supports.isMob ? 'fill' : ''
   };
 
