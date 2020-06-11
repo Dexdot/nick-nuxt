@@ -27,6 +27,7 @@ export default {
     padding: 8px 0 32px
 
 .case-quote__text
+  line-height: 0.88
   margin-bottom: 56px
 
   @media (max-width: $tab)

@@ -43,7 +43,7 @@ export default {
 
       this.timer = setTimeout(() => {
         this.isAnimating = false
-        // this.$router.push(this.to)
+        this.$router.push(this.to)
       }, this.duration)
     },
     stopCount() {

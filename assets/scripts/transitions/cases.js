@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 
 const duration = 1;
-const ease = 'power3.inOut';
+const ease = 'power4.inOut';
 
 const enter = ({ ctx, el, cb }) =>
   new Promise(resolve => {

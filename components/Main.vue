@@ -25,7 +25,7 @@
     <ul class="cases">
       <li
         ref="cases"
-        v-for="project in cases"
+        v-for="(project, caseIndex) in cases"
         :key="project.fields.slug"
         :class="['case', { 'case--soon': project.fields.soon }]"
         :data-title="project.fields.title"
@@ -49,12 +49,14 @@
                   playsinline
                   loop
                   muted
+                  @onloadeddata="firstCaseLoading += caseIndex === 0 ? 1 : 0"
                 />
 
                 <BaseImage
                   v-if="isImage(img)"
                   :img="img"
                   :alt="img.fields.title"
+                  @complete="firstCaseLoading += caseIndex === 0 ? 1 : 0"
                 />
               </div>
               <p
@@ -80,12 +82,14 @@
                   playsinline
                   loop
                   muted
+                  @onloadeddata="firstCaseLoading += caseIndex === 0 ? 1 : 0"
                 />
 
                 <BaseImage
                   v-if="isImage(img)"
                   :img="img"
                   :alt="img.fields.title"
+                  @complete="firstCaseLoading += caseIndex === 0 ? 1 : 0"
                 />
               </div>
               <p
@@ -100,7 +104,10 @@
       </li>
     </ul>
 
-    <nuxt-link style="display: block" :to="isDark ? '/' : '/black'">
+    <nuxt-link
+      style="display: block"
+      :to="$route.name === 'black' ? '/' : '/black'"
+    >
       <Toggler />
     </nuxt-link>
 
@@ -144,7 +151,8 @@ export default {
     chars: [],
     titleMob: '',
     isSoon: false,
-    isDesktop: false
+    isDesktop: false,
+    firstCaseLoading: 0
   }),
   computed: {
     ...mapGetters({
@@ -155,7 +163,7 @@ export default {
     }
   },
   mounted() {
-    this.animateEnter()
+    // this.animateEnter()
     this.observeCases()
     this.onResize()
     window.addEventListener('resize', this.onResize.bind(this))
@@ -165,11 +173,12 @@ export default {
   },
   methods: {
     animateEnter() {
-      if (document.readyState !== 'complete') {
-        window.addEventListener('load', () => {
-          mainTransition.enter({ el: this.$el })
-        })
-      }
+      mainTransition.enter({ el: this.$el })
+      // if (document.readyState !== 'complete') {
+      //   window.addEventListener('load', () => {
+      //     mainTransition.enter({ el: this.$el })
+      //   })
+      // }
     },
     observeCases() {
       const observer = new IntersectionObserver(
@@ -266,6 +275,11 @@ export default {
     },
     isImage,
     isVideo
+  },
+  watch: {
+    firstCaseLoading(i) {
+      if (i === 2 && document.readyState !== 'complete') this.animateEnter()
+    }
   }
 }
 </script>

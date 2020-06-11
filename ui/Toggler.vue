@@ -7,7 +7,7 @@
     :style="translateY"
   >
     <svg
-      v-if="isDark"
+      v-if="$route.name === 'black'"
       width="16"
       height="16"
       viewBox="0 0 16 16"
@@ -103,7 +103,7 @@ export default {
 
 .toggler
   position: fixed
-  top: calc(calc(var(--vh, 1vh) * 100) - 56px)
+  top: calc(calc(var(--vh, 1vh) * 100) - 64px)
   right: var(--unit)
 
   display: flex

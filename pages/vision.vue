@@ -123,6 +123,7 @@ export default {
         }, 200)
 
         setTimeout(() => {
+          circle.classList.add('is-faster')
           quotes.classList.add('is-faster')
         }, 2200)
       }
@@ -230,7 +231,7 @@ export default {
   width: 50vw
   height: 50vw
 
-  transition: 1s ease
+  transition: 2s ease
 
   @media (min-width: $tab-sm + 1)
     pointer-events: none
@@ -353,6 +354,7 @@ export default {
     margin-right: 24px
 
   .vision-link
+    transform: translateY(-100%)
     margin-left: auto
 
     img
@@ -376,6 +378,9 @@ export default {
 .quotes.blur
   text-shadow: 0px 0px 0px #000
   opacity: 1
+
+.vision-circle.is-faster
+  transition: 1s ease
 
 .quotes.is-faster
   transition: 1s

@@ -246,6 +246,7 @@ export default {
     },
     observe() {
       const elements = this.$el.querySelectorAll(`
+        .about__date,
         .about__text p,
         .about__img-list li,
         .about__info-img,
@@ -289,6 +290,8 @@ export default {
 
 // Date
 .about__date
+  --delay: 0.8s
+
   position: absolute
   left: var(--unit)
   top: calc(3.75vw * 4.5)
@@ -521,7 +524,8 @@ export default {
 
 
 // OBSERVER ANIMATION
-.about__info-contact li
+.about__info-contact li,
+.about__date,
   opacity: 0
   transition: .9s cubic-bezier(.215,.61,.355,1)
   transition-delay: var(--delay)

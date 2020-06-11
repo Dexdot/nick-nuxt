@@ -15,7 +15,13 @@ const enter = ({ el, cb }) =>
         translateY: '0%',
         opacity: 1,
         duration,
-        ease
+        ease,
+        onStart: () => {
+          gsap.set('.case__title--main', { overflow: 'hidden' });
+        },
+        onComplete: () => {
+          gsap.set('.case__title--main', { overflow: 'unset' });
+        }
       }
     );
 

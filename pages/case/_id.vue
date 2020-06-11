@@ -38,7 +38,9 @@
         </div>
 
         <div class="case__info-right">
-          <p>{{ project.role }}</p>
+          <template v-if="project.roles && project.roles.length > 0">
+            <p v-for="role in project.roles" :key="role">{{ role }}</p>
+          </template>
           <p class="case__info-client">{{ project.client }}</p>
         </div>
 
@@ -66,8 +68,10 @@
               class="case__info-right case__info-right--inner"
               v-if="item.isFirstBlock"
             >
-              <p>{{ project.role }}</p>
-              <b>{{ project.client }}</b>
+              <template v-if="project.roles && project.roles.length > 0">
+                <p v-for="role in project.roles" :key="role">{{ role }}</p>
+              </template>
+              <p>{{ project.client }}</p>
             </div>
 
             <BaseImage
@@ -307,7 +311,20 @@ export default {
       cases: 'cases/allCases'
     }),
     content() {
-      return this.project ? this.project.content.content : {}
+      let content = {}
+
+      if (this.project) {
+        content = this.project.content.content
+        content = content.filter(el => {
+          const isParagraph = this.isText(el)
+          const isEmpty =
+            isParagraph && el.content.length < 2 && el.content[0].value === ''
+
+          return !isEmpty
+        })
+      }
+
+      return content
     },
     nextContent() {
       let nextContent = {
@@ -343,6 +360,8 @@ export default {
     this.$store.dispatch('dom/toggleDark', false)
     this.observe()
     this.startPreviews()
+
+    window.$case = this
   },
   methods: {
     onPopState() {
@@ -481,11 +500,9 @@ export default {
 .case__title--right
   justify-content: flex-end
 
-.case__title--main
-  overflow: hidden
-
 .case__img-wrap
   display: flex
+  align-items: flex-start
 
 .case__img
   width: 100vw
@@ -499,6 +516,9 @@ export default {
     display: block
     width: 100%
     height: auto
+
+.case__img-wrap:last-child .case__img
+  margin-bottom: 0
 
 .case__cover
   position: relative
@@ -575,7 +595,7 @@ export default {
   margin: 24px 0 160px mix(1)
 
   @media (max-width: $tab)
-    margin: 0 0 40px
+    margin: 0 0 24px
 
   img
     margin-left: 2px
