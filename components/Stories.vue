@@ -192,10 +192,6 @@ export default {
 
   background: #fff
 
-  // @media (min-width: 1001px) and (max-width: 1440px) and (max-height: 700px)
-  //   align-items: flex-end
-  //   padding-bottom: 24px
-
   @media (max-width: 1000px)
     padding-top: 0
 
@@ -234,10 +230,7 @@ export default {
     content: ''
     display: block
     width: 100%
-    padding-bottom: 175.65%
-
-    @media (max-width: $mob)
-      padding-bottom: 160%
+    padding-bottom: 177.77%
 
 .story-img__i
   position: absolute

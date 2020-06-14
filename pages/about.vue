@@ -304,8 +304,7 @@ export default {
     top: 100%
     transform: translateY(-100%)
 
-.about__text-wrap,
-.about__img-list
+.about__text-wrap
   margin-bottom: 160px
 
   @media (max-width: $tab) and (min-width: $tab-sm + 1)
@@ -363,6 +362,7 @@ export default {
 .about__img-list
   display: flex
   padding: 0 var(--unit) 0 calc(#{var(--unit)} + #{mix(1)})
+  margin-bottom: 24px
 
   @media (max-width: $tab-sm)
     padding: 0 var(--unit) 0 calc(#{var(--unit)} + 80px)

@@ -231,19 +231,19 @@ export default {
   width: 50vw
   height: 50vw
 
-  transition: 2s ease
+  transition: 2s ease 0.3s
 
   @media (min-width: $tab-sm + 1)
     pointer-events: none
     top: 50%
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%) scale(0)
 
   @media (max-width: $tab-sm)
     width: 200px
     height: 200px
 
     bottom: -16px
-    transform: translate(-50%, 0)
+    transform: translate(-50%, 0) scale(0)
 
   &::before
     @media (max-width: $tab-sm)
@@ -298,15 +298,19 @@ export default {
 .vision-circle:not(.vision-circle--animated)
   opacity: 0
 
-.vision-circle[data-index="1"]
+.vision-circle--animated
+  @media (max-width: $tab-sm)
+    transform: translate(-50%, 0) scale(1)
+
+.vision-circle--animated[data-index="1"]
   @media (min-width: $tab-sm + 1)
     transform: translate(-50%, -50%) scale(0.6)
 
-.vision-circle[data-index="2"]
+.vision-circle--animated[data-index="2"]
   @media (min-width: $tab-sm + 1)
     transform: translate(-50%, -50%) scale(0.8)
 
-.vision-circle[data-index="3"]
+.vision-circle--animated[data-index="3"]
   @media (min-width: $tab-sm + 1)
     transform: translate(-50%, -50%) scale(1)
 
@@ -354,8 +358,9 @@ export default {
     margin-right: 24px
 
   .vision-link
-    transform: translateY(-100%)
     margin-left: auto
+    margin-right: column-spans(1)
+    transform: translateX(100%)
 
     img
       margin-top: 2px
