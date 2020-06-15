@@ -362,7 +362,7 @@ export default {
 .about__img-list
   display: flex
   padding: 0 var(--unit) 0 calc(#{var(--unit)} + #{mix(1)})
-  margin-bottom: 24px
+  margin-bottom: gutters(1)
 
   @media (max-width: $tab-sm)
     padding: 0 var(--unit) 0 calc(#{var(--unit)} + 80px)
