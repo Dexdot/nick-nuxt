@@ -521,7 +521,7 @@ export default {
     right: 11.66vw
 
     @media (max-width: $tab)
-      right: 6.4vw
+      right: var(--unit)
 
   li:nth-child(1) .img
     +case-a
