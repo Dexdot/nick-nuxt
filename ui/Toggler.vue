@@ -114,5 +114,5 @@ export default {
   height: 40px
 
   @media (max-width: $mob)
-    top: calc(calc(var(--vh, 1vh) * 100) - 48px)
+    top: calc(calc(var(--vh, 1vh) * 100) - 72px)
 </style>

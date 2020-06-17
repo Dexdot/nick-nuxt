@@ -515,25 +515,28 @@ export default {
   @media (max-width: $tab)
     padding-bottom: 32px
 
-  li:nth-child(1)
-    margin-left: 9.4vw
-
-    @media (max-width: $tab)
-      margin-left: 4.2vw
-
   li:nth-child(2)
     position: absolute
     bottom: 0
-    right: 9.4vw
+    right: 11.66vw
 
     @media (max-width: $tab)
       right: 6.4vw
 
   li:nth-child(1) .img
-    +case-i
+    +case-a
+    margin-left: auto
+    margin-right: 32.13vw
+
+    @media (max-width: $tab)
+      margin-right: 19.2vw
+
 
   li:nth-child(2) .img
-    +case-i-sm
+    +case-a-sm
+
+  .case-subtitle
+    left: 0
 
 
 .case:nth-child(12)
