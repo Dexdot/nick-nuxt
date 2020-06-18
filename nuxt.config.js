@@ -37,7 +37,6 @@ module.exports = {
       { charset: 'utf-8' },
       { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
       { name: 'viewport', content: 'width=device-width,initial-scale=1.0' },
-      { name: 'author', content: 'dexdot' },
       { hid: 'description', name: 'description', content: baseDescription },
       // OG
       { property: 'og:locale', content: 'ru_RU' },
@@ -118,7 +117,7 @@ module.exports = {
       },
       {
         rel: 'mask-icon',
-        href: '/safari-pinned-tab.svg',
+        href: '/favicon/safari-pinned-tab.svg',
         color: '#5bbad5'
       }
     ]
