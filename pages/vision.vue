@@ -219,7 +219,7 @@ export default {
   +yo('font-size', (375px: 36px, 1920px: 144px))
 
   display: block
-  margin-bottom: 0.44em
+  margin-bottom: 0.33em
 
   @media (max-width: $tab-sm)
     margin-bottom: 40px
