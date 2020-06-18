@@ -8,6 +8,7 @@
           <li><MenuLink class="no-theme" to="/">Index</MenuLink></li>
           <li><MenuLink class="no-theme" to="/about">About</MenuLink></li>
           <li><MenuLink class="no-theme" to="/vision">Vision</MenuLink></li>
+          <li><MenuLink class="no-theme" to="/black">Black</MenuLink></li>
           <li>
             <MenuLink class="no-theme" to="/inspire" disable>Journal</MenuLink>
           </li>
@@ -76,9 +77,9 @@ export default {
   .menu__social
     transition: 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)
 
-@for $i from 1 through 4
+@for $i from 1 through 5
   .menu-enter-active .menu__nav li:nth-child(#{$i})
-    transition: 0.4s ease (#{$i*0.05s + 0.4s})
+    transition: 0.4s ease (#{$i*0.05s + 0.5s})
 
 
 /* LEAVE */
@@ -111,7 +112,7 @@ export default {
   .menu__social
     transition: 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)
 
-@for $i from 1 through 4
+@for $i from 1 through 5
   .menu-leave-active .menu__nav li:nth-child(#{$i})
     transition: 0.4s ease (#{$i*0.05s})
 

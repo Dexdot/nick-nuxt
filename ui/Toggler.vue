@@ -88,6 +88,9 @@ export default {
   transition: opacity 0.25s ease
   opacity: 0
   pointer-events: none
+
+  @media (max-width: $mob)
+    display: none
   
 .toggler.visible
   opacity: 1
