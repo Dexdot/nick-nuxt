@@ -79,7 +79,7 @@ module.exports = {
       // Favicons
       {
         name: 'msapplication-TileColor',
-        content: '#da532c'
+        content: '#000000'
       },
       {
         name: 'msapplication-TileImage',
@@ -114,7 +114,12 @@ module.exports = {
       },
       {
         rel: 'manifest',
-        href: '/favicon/manifest.json'
+        href: '/favicon/site.webmanifest'
+      },
+      {
+        rel: 'mask-icon',
+        href: '/safari-pinned-tab.svg',
+        color: '#5bbad5'
       }
     ]
   },
