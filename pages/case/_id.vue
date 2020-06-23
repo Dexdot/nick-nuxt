@@ -360,8 +360,6 @@ export default {
     this.$store.dispatch('dom/toggleDark', false)
     this.observe()
     this.startPreviews()
-
-    window.$case = this
   },
   methods: {
     onPopState() {

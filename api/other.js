@@ -5,7 +5,7 @@ export const fetchAbout = options =>
   new Promise(resolve => {
     client
       .getEntries({
-        content_type: 'aboutTest',
+        content_type: 'about',
         ...options
       })
       .then(({ items }) => {
@@ -18,7 +18,7 @@ export const fetchVision = options =>
   new Promise(resolve => {
     client
       .getEntries({
-        content_type: 'visionTest',
+        content_type: 'vision',
         ...options
       })
       .then(({ items }) => {

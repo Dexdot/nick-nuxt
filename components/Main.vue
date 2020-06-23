@@ -278,7 +278,11 @@ export default {
   },
   watch: {
     firstCaseLoading(i) {
-      if (i === 2 && document.readyState !== 'complete') this.animateEnter()
+      const routeDir = this.$store.getters['dom/routeDir']
+
+      if (i === 2 && !routeDir.from) {
+        this.animateEnter()
+      }
     }
   }
 }
