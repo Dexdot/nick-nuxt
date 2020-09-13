@@ -61,7 +61,8 @@
               :href="project.url"
             >
               <span>{{ project.urlText || project.url }}</span>
-              <img src="~assets/svg/arrow-up.svg" alt="Arrow" />
+              <img v-if="isDark" src="~assets/svg/arrow-up-w.svg" alt="Arrow" />
+              <img v-else src="~assets/svg/arrow-up.svg" alt="Arrow" />
             </a>
 
             <div
@@ -160,6 +161,8 @@
 
         <a :href="project.etalon" target="_blank">
           <b>{{ project.etalon.replace(/(^\w+:|^)\/\//, '') }}</b>
+          <img v-if="isDark" src="~assets/svg/arrow-up-w.svg" alt="Arrow" />
+          <img v-else src="~assets/svg/arrow-up.svg" alt="Arrow" />
         </a>
       </div>
     </article>
@@ -308,7 +311,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      cases: 'cases/allCases'
+      cases: 'cases/allCases',
+      isDark: 'dom/isDark'
     }),
     content() {
       let content = {}
@@ -629,8 +633,12 @@ export default {
     width: columns(1)
 
 .case__etalon a
-  display: block
+  display: flex
+  align-items: center
   margin-top: 2px
+
+  img
+    margin-left: 2px
 
 .case__footer-content:not(.case__footer-content--inner)
   @media (max-width: $tab)
